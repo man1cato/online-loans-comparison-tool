@@ -1,0 +1,6 @@
+yarn-error.log
+public/dist/
+.env
+.env.test
+.env.development
+node_modules
