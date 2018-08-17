@@ -2,17 +2,7 @@ import React from 'react';
 import Cleave from 'cleave.js/react';
 
 const LoanFilter = ({handleChange, loanAmount, tool}) => (
-    <form>
-
-        { tool === 'auto' && 
-            <div>
-                <h4>Type</h4>
-                <select name="type" defaultValue="Purchase" onChange={handleChange}>
-                    <option value="Purchase">Purchase</option>
-                    <option value="Refinance">Refinance</option>
-                </select>
-            </div>
-        }
+    <form>        
 
         <h4>Loan Amount</h4>        
         <Cleave 
@@ -27,6 +17,23 @@ const LoanFilter = ({handleChange, loanAmount, tool}) => (
             value={loanAmount}
             onChange={handleChange}
         /> 
+
+        { tool === 'auto' && 
+            <div>
+                <h4>Type</h4>
+                <select name="type" defaultValue="Purchase" onChange={handleChange}>
+                    <option value="Purchase">Purchase</option>
+                    <option value="Refinance">Refinance</option>
+                </select>
+                
+                <h4>Vehicle Age</h4>
+                <select name="age" defaultValue="0" onChange={handleChange}>
+                    <option value="0">{"<"} 5 yrs</option>
+                    <option value="5">5 - 10 yrs</option>
+                    <option value="11">11+ yrs</option>
+                </select>
+            </div>
+        }
 
         { tool === 'business' &&
             <div>

@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const airtableBaseUrl = 'https://api.airtable.com/v0/apprEaBSfPkubZY2R';
-const airtableApiKey = 'key3K9tGEczfYDL5s';
-// const airtableApiKey = process.env.AIRTABLE_API_KEY;
+const airtableApiKey = process.env.AIRTABLE_API_KEY;
 
 
 const getBusinessLoans = async () => {
@@ -41,8 +40,6 @@ const getPersonalLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Personal Loans?api_key=${airtableApiKey}`);
     
     return response.data.records.map((record) => {
-        const minLoanAmount = record.fields["Min Amount"];
-        const maxLoanAmount = record.fields["Max Amount"];
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
         const minTermLength = record.fields["Min Term Length (mths)"];  //Given in months
@@ -56,8 +53,8 @@ const getPersonalLoans = async () => {
             minCreditScore: record.fields["Min Credit Score"],
             minIncome: record.fields["Min Income"],
             minCreditHistory: record.fields["Min Credit History (yrs)"],
-            minLoanAmount,
-            maxLoanAmount,
+            minLoanAmount: record.fields["Min Amount"],
+            maxLoanAmount: record.fields["Max Amount"],
             minApr, 
             maxApr,
             minOrigFee: record.fields["Min Origination Fee"],
@@ -76,8 +73,6 @@ const getAutoLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Auto Loans?api_key=${airtableApiKey}`);
     
     return response.data.records.map((record) => {
-        const minLoanAmount = record.fields["Min Amount"];
-        const maxLoanAmount = record.fields["Max Amount"];
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
         const maxTermLength = record.fields["Max Term Length (mths)"];  //Given in months
@@ -89,8 +84,8 @@ const getAutoLoans = async () => {
             type: record.fields.Type,
             lender: record.fields["Lender Text"], 
             minCreditScore: record.fields["Min Credit Score"],
-            minLoanAmount,
-            maxLoanAmount,
+            minLoanAmount: record.fields["Min Amount"],
+            maxLoanAmount: record.fields["Max Amount"] || 100000,
             minApr, 
             maxApr,
             maxTermLength,

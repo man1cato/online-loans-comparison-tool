@@ -84,7 +84,7 @@ export default class ComparisonTool extends React.Component {
     handleFilterChange = (e) => {
         const filter = e.target.name;
         let value = e.target.value;
-        value = numeral(value).value() ? numeral(value).value() : value;
+        value = numeral(value).value() ? numeral(value).value() : value;  //ISN'T ACCOUNTING FOR ZERO
         if (filter === 'loanAmount') { value = numeral(e.target.rawValue).value() };
             
         this.setState((prevState) => {  

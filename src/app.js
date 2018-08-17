@@ -7,6 +7,7 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import ComparisonTool from './components/ComparisonTool';
 
+
 const getLoanData = async () => {
     try {
         const [businessLoans, personalLoans, autoLoans] = await Promise.all([getBusinessLoans(), getPersonalLoans(), getAutoLoans()]);
