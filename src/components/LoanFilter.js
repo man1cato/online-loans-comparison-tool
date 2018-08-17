@@ -28,24 +28,41 @@ const LoanFilter = ({handleChange, loanAmount, tool}) => (
             onChange={handleChange}
         /> 
 
-        <h4>Time in Business</h4>
-        <select name="timeInBusiness" defaultValue="12" onChange={handleChange}>
-            <option value="0">{"<"} 6 months</option>
-            <option value="6">6 months - 1 year</option>
-            <option value="12">1 - 2 years</option>
-            <option value="24">2+ years</option>
-        </select>        
-        
-        <h4>Annual Revenue</h4>
-        <select name="annualRevenue" defaultValue="100000" onChange={handleChange}>
-            <option value="0">{"<"} $25,000</option>
-            <option value="25000">$25,000 - $49,999</option>
-            <option value="50000">$50,000 - $74,999</option>
-            <option value="75000">$75,000 - $99,999</option>
-            <option value="100000">$100,000 - $149,999</option>
-            <option value="150000">$150,000 - $199,999</option>
-            <option value="200000">$200,000+</option>
-        </select>  
+        { tool === 'business' &&
+            <div>
+                <h4>Time in Business</h4>
+                <select name="timeInBusiness" defaultValue="12" onChange={handleChange}>
+                    <option value="0">{"<"} 6 months</option>
+                    <option value="6">6 months - 1 year</option>
+                    <option value="12">1 - 2 years</option>
+                    <option value="24">2+ years</option>
+                </select>        
+                
+                <h4>Annual Revenue</h4>
+                <select name="annualRevenue" defaultValue="100000" onChange={handleChange}>
+                    <option value="0">{"<"} $25,000</option>
+                    <option value="25000">$25,000 - $49,999</option>
+                    <option value="50000">$50,000 - $74,999</option>
+                    <option value="75000">$75,000 - $99,999</option>
+                    <option value="100000">$100,000 - $149,999</option>
+                    <option value="150000">$150,000 - $199,999</option>
+                    <option value="200000">$200,000+</option>
+                </select>  
+            </div>
+        }
+
+        { tool === 'personal' &&
+            <div>     
+                <h4>Annual Income</h4>
+                <select name="income" defaultValue="50000" onChange={handleChange}>
+                    <option value="0">{"<"} $15,000</option>
+                    <option value="15000">$15,000 - $29,999</option>
+                    <option value="30000">$30,000 - $49,999</option>
+                    <option value="50000">$50,000 - $99,999</option>
+                    <option value="100000">$100,000+</option>
+                </select>  
+            </div>
+        }
 
         <h4>Credit Score</h4>
         <select name="creditScore" defaultValue="720" onChange={handleChange}>

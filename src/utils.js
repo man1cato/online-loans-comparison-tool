@@ -47,8 +47,8 @@ const getPersonalLoans = async () => {
         const maxApr = record.fields["Max APR"];    //Given in percentage value
         const minTermLength = record.fields["Min Term Length (mths)"];  //Given in months
         const maxTermLength = record.fields["Max Term Length (mths)"];  //Given in months
-        const minMonthlyPayment = 5000 * (1 + minApr/100 * minTermLength/12) / minTermLength;   //Default $5000 loan amount
-        const maxMonthlyPayment = 5000 * (1 + maxApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
+        const minMonthlyPayment = 10000 * (1 + minApr/100 * minTermLength/12) / minTermLength;   //Default $5000 loan amount
+        const maxMonthlyPayment = 10000 * (1 + maxApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
 
         return {
             id: record.id,
@@ -81,12 +81,12 @@ const getAutoLoans = async () => {
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
         const maxTermLength = record.fields["Max Term Length (mths)"];  //Given in months
-        const minMonthlyPayment = 10000 * (1 + minApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
-        const maxMonthlyPayment = 10000 * (1 + maxApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
+        const minMonthlyPayment = 15000 * (1 + minApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
+        const maxMonthlyPayment = 15000 * (1 + maxApr/100 * maxTermLength/12) / maxTermLength;   //Default $5000 loan amount
 
         return {
             id: record.id,
-            type: record.fields.Type[0],
+            type: record.fields.Type,
             lender: record.fields["Lender Text"], 
             minCreditScore: record.fields["Min Credit Score"],
             minLoanAmount,
