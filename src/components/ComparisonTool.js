@@ -82,7 +82,7 @@ export default class ComparisonTool extends React.Component {
     }
 
     handleFilterChange = (e) => {
-        const filter = e.target.name;
+        const filter = e.target.id;
         let value = e.target.value;
         value = numeral(value).value() ? numeral(value).value() : value;  //ISN'T ACCOUNTING FOR ZERO
         if (filter === 'loanAmount') { value = numeral(e.target.rawValue).value() };
@@ -121,29 +121,32 @@ export default class ComparisonTool extends React.Component {
 
     render () {
         return (
-            <div className="grid">
-                <div className="grid__sidebar">
-                    <LoanFilter 
-                        handleChange={this.handleFilterChange}
-                        loanAmount={this.state.filters.loanAmount}
-                        tool={this.state.tool}
-                    />
-                </div>
+            <div className="container">
+                <div className="grid">
+                    <div className="grid__sidebar">
+                        <LoanFilter 
+                            handleChange={this.handleFilterChange}
+                            loanAmount={this.state.filters.loanAmount}
+                            tool={this.state.tool}
+                        />
+                    </div>
 
-                <div className="grid__header">
-                    <button className="grid__col1" name="business" onClick={this.handleTabClick}>Business</button>
-                    <button className="grid__col2" name="personal" onClick={this.handleTabClick}>Personal</button>
-                    <button className="grid__col3" name="auto" onClick={this.handleTabClick}>Auto</button>
-                    <button className="grid__col4" name="home" onClick={this.handleTabClick}>Home</button>
+                    <div className="grid__header btn-group" role="group" aria-label="Tool tabs">
+                        <button className="grid__col1 btn btn-primary" name="business" onClick={this.handleTabClick}>Business</button>
+                        <button className="grid__col2 btn btn-primary" name="personal" onClick={this.handleTabClick}>Personal</button>
+                        <button className="grid__col3 btn btn-primary" name="auto" onClick={this.handleTabClick}>Auto</button>
+                        <button className="grid__col4 btn btn-primary" name="home" onClick={this.handleTabClick}>Home</button>
+                    </div>
+                    
+                    <div className="grid__body">
+                        {{
+                            business: <BusinessLoans loans={this.state.filteredLoans} />,
+                            personal: <PersonalLoans loans={this.state.filteredLoans} />,
+                            auto: <AutoLoans loans={this.state.filteredLoans} />,
+                            home: null,
+                        }[this.state.tool]}
+                    </div>
                 </div>
-                
-                {{
-                    business: <BusinessLoans loans={this.state.filteredLoans} />,
-                    personal: <PersonalLoans loans={this.state.filteredLoans} />,
-                    auto: <AutoLoans loans={this.state.filteredLoans} />,
-                    home: null,
-                }[this.state.tool]}
-                
             </div>
         )
     }

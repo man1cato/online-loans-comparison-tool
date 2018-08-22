@@ -22,20 +22,26 @@ module.exports = (env) => {
             },{                         //rules needed for styling
                 test: /\.s?css$/,
                 use: CSSExtract.extract({
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: true
-                            }
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: true
-                            }
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true
                         }
-                    ]
+                    }, {
+                        loader: 'postcss-loader', // Run post css actions
+                        options: {
+                          plugins:  () => { // post css plugins, can be exported to postcss.config.js
+                            return [
+                              require('autoprefixer')
+                            ];
+                          }
+                        }
+                    }, {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }]
                 })
             }]
         },

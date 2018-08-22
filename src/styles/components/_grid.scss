@@ -3,12 +3,15 @@
     grid-template-columns: 1fr 4fr;
     grid-template-areas: 
         ". header"
-        ". body"
+        ". body";
+    grid-column-gap: 20px;
+    grid-row-gap: 15px;
+    height: 100vh;
 }
 
 .grid__sidebar {
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 2;
 }
 
 .grid__header {
@@ -17,31 +20,54 @@
     grid-template-columns: repeat(4, 1fr);
 }
 
+.grid__body {
+    grid-area: body;
+    overflow: scroll;
+}
+
 .grid--4col {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 10px;
+    text-align: center;
 }
 
 .grid--loan {
-    @extend .grid--4col;
-    grid-row-gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
     margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 5px;
+}
+
+.grid--col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .grid__col1 {
-    grid-column: 1;
+    @extend .grid--col;
+    grid-column: 1;    
 }
 
 .grid__col2 {
+    @extend .grid--col;
     grid-column: 2;
 }
 
 .grid__col3 {
+    @extend .grid--col;
     grid-column: 3;
 }
 
 .grid__col4 {
+    @extend .grid--col;
     grid-column: 4;
 }
 

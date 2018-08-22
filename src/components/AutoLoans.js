@@ -4,11 +4,11 @@ import numeral from 'numeral';
 
 const AutoLoans = ({loans}) => (
     <div>
-        <div className="grid--4col">
+        {/* <div className="grid--4col">
             <h4 className="grid__col1">Est. APR</h4>
             <h4 className="grid__col2">Est. Monthly Payment</h4>
             <h4 className="grid__col3">Min Credit Score</h4>
-        </div>
+        </div> */}
 
         {loans.map((loan, i) => (
             <div className="grid--loan" key={i}>
@@ -26,8 +26,8 @@ const AutoLoans = ({loans}) => (
                 </div>
         
                 <div className="grid__col4">
-                    <button>Apply Now</button>
-                    <div>{loan.lender}</div>
+                    <button className="btn btn-primary">Apply Now</button>
+                    <h5>{loan.lender}</h5>
                 </div>
         
                 <div className="grid__col1-2">
