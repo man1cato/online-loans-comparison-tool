@@ -35,7 +35,7 @@ export default class ComparisonTool extends React.Component {
     state = {
         tool: 'business',
         filters: {
-            type: undefined,
+            type: 'Purchase',
             loanAmount: 50000,
             timeInBusiness: 12,
             annualRevenue: 150000,
@@ -45,7 +45,7 @@ export default class ComparisonTool extends React.Component {
     }
 
     handleTabClick = (e) => {
-        const tool = e.target.name;
+        const tool = e.target.id;
         const filteredLoans = {
             business: this.props.businessLoans,
             personal: this.props.personalLoans,
@@ -65,7 +65,7 @@ export default class ComparisonTool extends React.Component {
                 creditScore: 720
             },
             auto: {
-                type: "Purchase",
+                type: 'Purchase',
                 loanAmount: 15000,
                 creditScore: 720
             },
@@ -126,16 +126,16 @@ export default class ComparisonTool extends React.Component {
                     <div className="grid__sidebar">
                         <LoanFilter 
                             handleChange={this.handleFilterChange}
-                            loanAmount={this.state.filters.loanAmount}
+                            filters={this.state.filters}
                             tool={this.state.tool}
                         />
                     </div>
 
-                    <div className="grid__header btn-group" role="group" aria-label="Tool tabs">
-                        <button className="grid__col1 btn btn-primary" name="business" onClick={this.handleTabClick}>Business</button>
-                        <button className="grid__col2 btn btn-primary" name="personal" onClick={this.handleTabClick}>Personal</button>
-                        <button className="grid__col3 btn btn-primary" name="auto" onClick={this.handleTabClick}>Auto</button>
-                        <button className="grid__col4 btn btn-primary" name="home" onClick={this.handleTabClick}>Home</button>
+                    <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
+                        <button id="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
+                        <button id="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
+                        <button id="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
+                        <button id="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
                     </div>
                     
                     <div className="grid__body">

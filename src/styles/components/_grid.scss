@@ -1,6 +1,7 @@
 .grid {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content auto;
     grid-template-areas: 
         ". header"
         ". body";
@@ -12,12 +13,16 @@
 .grid__sidebar {
     grid-column: 1;
     grid-row: 2;
+    align-items: flex-start;
 }
 
 .grid__header {
     grid-area: header;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    grid-auto-flow: column;
+    height: min-content;
 }
 
 .grid__body {
@@ -37,7 +42,7 @@
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 15px;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: 5px;

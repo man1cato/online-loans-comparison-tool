@@ -1,7 +1,7 @@
 import React from 'react';
 import Cleave from 'cleave.js/react';
 
-const LoanFilter = ({handleChange, loanAmount, tool}) => (
+const LoanFilter = ({handleChange, tool, filters}) => (
     <form>        
         <div className="form-group">
             <label htmlFor="loanAmount">Loan Amount</label>
@@ -15,28 +15,29 @@ const LoanFilter = ({handleChange, loanAmount, tool}) => (
                     numeralPositiveOnly: true,
                     prefix: "$"
                 }}
-                value={loanAmount}
+                value={filters.loanAmount}
                 onChange={handleChange}
             /> 
         </div>
 
         { tool === 'auto' && 
-            <div>
-                <div className="form-group">
-                    <label htmlFor="type">Type</label>
-                    <select className="form-control" id="type" defaultValue="Purchase" onChange={handleChange}>
-                        <option value="Purchase">Purchase</option>
-                        <option value="Refinance">Refinance</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="age">Vehicle Age</label>
-                    <select className="form-control" id="age" defaultValue="0" onChange={handleChange}>
-                        <option value="0">{"<"} 5 yrs</option>
-                        <option value="5">5 - 10 yrs</option>
-                        <option value="11">11+ yrs</option>
-                    </select>
-                </div>
+            <div className="form-group">
+                <label htmlFor="type">Type</label>
+                <select className="form-control" id="type" defaultValue="Purchase" onChange={handleChange}>
+                    <option value="Purchase">Purchase</option>
+                    <option value="Refinance">Refinance</option>
+                </select>
+            </div>
+        }
+        
+        { tool === 'auto' && filters.type === 'Refinance' &&
+            <div className="form-group">
+                <label htmlFor="age">Vehicle Age</label>
+                <select className="form-control" id="age" defaultValue="0" onChange={handleChange}>
+                    <option value="0">{"<"} 5 yrs</option>
+                    <option value="5">5 - 10 yrs</option>
+                    <option value="11">11+ yrs</option>
+                </select>
             </div>
         }
 
@@ -55,7 +56,8 @@ const LoanFilter = ({handleChange, loanAmount, tool}) => (
                 <div className="form-group">
                     <label htmlFor="annualRevenue">Annual Revenue</label>
                     <select className="form-control" name="annualRevenue" defaultValue="100000" onChange={handleChange}>
-                        <option value="0">{"<"} $25,000</option>
+                        <option value="0">{"<"} $10,000</option>
+                        <option value="10000">$10,000 - $24,999</option>
                         <option value="25000">$25,000 - $49,999</option>
                         <option value="50000">$50,000 - $74,999</option>
                         <option value="75000">$75,000 - $99,999</option>
@@ -75,7 +77,8 @@ const LoanFilter = ({handleChange, loanAmount, tool}) => (
                     <option value="15000">$15,000 - $29,999</option>
                     <option value="30000">$30,000 - $49,999</option>
                     <option value="50000">$50,000 - $99,999</option>
-                    <option value="100000">$100,000+</option>
+                    <option value="100000">$100,000 - $149,999</option>
+                    <option value="150000">$150,000+</option>
                 </select>  
             </div>
         }

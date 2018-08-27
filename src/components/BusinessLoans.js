@@ -2,7 +2,7 @@ import React from 'react';
 import numeral from 'numeral';
 
 const BusinessLoans = ({loans}) => (
-    <div>
+    <div className="loan">
         {/* <div className="grid--4col">
             <h4>Est. APR</h4>
             <h4>Est. Interest</h4>
@@ -12,15 +12,15 @@ const BusinessLoans = ({loans}) => (
         {loans.map((loan, i) => (
             <div className="grid--loan" key={i}>
                 <div className="grid__col1">
-                    <div>{loan.minApr}% - {loan.maxApr}%</div>
+                    <h3>{loan.minApr}% - {loan.maxApr}%</h3>
                     <h5>Est. APR</h5>
                 </div>
                 <div className="grid__col2">
-                    <div>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</div>
+                    <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                     <h5>Est. Interest</h5>
                 </div>        
                 <div className="grid__col3">
-                    <div>{loan.minCreditScore}</div>
+                    <h3>{loan.minCreditScore}</h3>
                     <h5>Min Credit Score</h5>
                 </div>
         

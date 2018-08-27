@@ -3,7 +3,7 @@ import numeral from 'numeral';
 
 
 const PersonalLoans = ({loans}) => (
-    <div>
+    <div className="loan">
         {/* <div className="grid--4col">
             <h4 className="grid__col1">Est. APR</h4>
             <h4 className="grid__col2">Est. Monthly Payment</h4>
@@ -13,16 +13,16 @@ const PersonalLoans = ({loans}) => (
         {loans.map((loan, i) => (
             <div className="grid--loan" key={i}>
                 <div className="grid__col1">
-                    <div>{loan.minApr}% - {loan.maxApr}%</div>
-                    <div>Est. APR</div>
+                    <h3>{loan.minApr}% - {loan.maxApr}%</h3>
+                    <h5>Est. APR</h5>
                 </div>
                 <div className="grid__col2">
-                    <div>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</div>
-                    <div>Est. Monthly Payment</div>
+                    <h3>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</h3>
+                    <h5>Est. Monthly Payment</h5>
                 </div>        
                 <div className="grid__col3">
-                    <div>{loan.minCreditScore}</div>
-                    <div>Min Credit Score</div>
+                    <h3>{loan.minCreditScore}</h3>
+                    <h5>Min Credit Score</h5>
                 </div>
         
                 <div className="grid__col4">
@@ -31,12 +31,12 @@ const PersonalLoans = ({loans}) => (
                 </div>
         
                 <div className="grid__col1-2">
-                    <div>Notes</div>
+                    <h4>Notes</h4>
                     <div>{loan.notes}</div>
                 </div>
         
                 <div className="grid__col3-4">
-                    <div>Other Requirements</div>
+                    <h4>Other Requirements</h4>
                     <div>{loan.otherReqs}</div>
                 </div>
             </div>

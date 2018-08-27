@@ -28,7 +28,7 @@ module.exports = (env) => {
                             sourceMap: true
                         }
                     }, {
-                        loader: 'postcss-loader', // Run post css actions
+                        loader: 'postcss-loader', // Needed for Bootstrap
                         options: {
                           plugins:  () => { // post css plugins, can be exported to postcss.config.js
                             return [
