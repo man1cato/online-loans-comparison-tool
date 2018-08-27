@@ -1,4 +1,5 @@
 const path = require('path'); 
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
@@ -47,7 +48,10 @@ module.exports = (env) => {
         },
         plugins: [
             CSSExtract,
-            new Dotenv()
+            new Dotenv(),
+            new webpack.DefinePlugin({
+                'process.env.AIRTABLE_API_KEY': JSON.stringify(process.env.AIRTABLE_API_KEY)
+            })
         ],
         devtool: isProduction ? 'source-map' : 'inline-source-map', //This allows the console to point you to the correct file instead of the bundle file
         devServer: {
