@@ -26,8 +26,8 @@ const PersonalLoans = ({loans}) => (
                 </div>
         
                 <div className="grid__col4">
+                    <img src={loan.logo} alt={loan.lender} />
                     <button className="btn btn-primary">Apply Now</button>
-                    <h5>{loan.lender}</h5>
                 </div>
         
                 <div className="grid__col1-2">

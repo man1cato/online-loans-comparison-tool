@@ -19,6 +19,7 @@ const getBusinessLoans = async () => {
             id: record.id,
             type: record.fields["Type"],
             lender: record.fields["Lender Text"], 
+            logo: record.fields.Logo[0].url,
             minCreditScore: record.fields["Min Credit Score"],
             minTimeInBusiness: record.fields["Min Time in Business (mths)"],
             minAnnualRevenue: record.fields["Min Annual Revenue"],
@@ -50,6 +51,7 @@ const getPersonalLoans = async () => {
         return {
             id: record.id,
             lender: record.fields["Lender Text"], 
+            logo: record.fields.Logo[0].url, 
             minCreditScore: record.fields["Min Credit Score"],
             minIncome: record.fields["Min Income"],
             minCreditHistory: record.fields["Min Credit History (yrs)"],
@@ -83,6 +85,7 @@ const getAutoLoans = async () => {
             id: record.id,
             type: record.fields.Type,
             lender: record.fields["Lender Text"], 
+            logo: record.fields.Logo[0].url, 
             minCreditScore: record.fields["Min Credit Score"],
             minLoanAmount: record.fields["Min Amount"],
             maxLoanAmount: record.fields["Max Amount"] || 100000,
