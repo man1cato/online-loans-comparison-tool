@@ -21,12 +21,26 @@ const LoanFilter = ({handleChange, tool, filters}) => (
         </div>
 
         { tool === 'auto' && 
-            <div className="form-group">
-                <label htmlFor="purpose">Purpose</label>
-                <select className="form-control" id="purpose" defaultValue="Purchase" onChange={handleChange}>
-                    <option value="Purchase">Purchase</option>
-                    <option value="Refinance">Refinance</option>
-                </select>
+            <div>
+                <div className="form-group">
+                    <label htmlFor="termMonths">Loan Term</label>
+                    <select className="form-control" id="termMonths" defaultValue="60" onChange={handleChange}>
+                        <option value="24">2 yrs (24 mths)</option>
+                        <option value="36">3 yrs (36 mths)</option>
+                        <option value="48">4 yrs (48 mths)</option>
+                        <option value="60">5 yrs (60 mths)</option>
+                        <option value="72">6 yrs (72 mths)</option>
+                        <option value="84">7 yrs (84 mths)</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="purpose">Purpose</label>
+                    <select className="form-control" id="purpose" defaultValue="Purchase" onChange={handleChange}>
+                        <option value="Purchase">Purchase</option>
+                        <option value="Refinance">Refinance</option>
+                    </select>
+                </div>
             </div>
         }
         
@@ -57,8 +71,7 @@ const LoanFilter = ({handleChange, tool, filters}) => (
         }
 
         { tool === 'business' &&
-            <div>
-                
+            <div>                
                 <div className="form-group">
                     <label htmlFor="timeInBusiness">Time in Business</label>
                     <select className="form-control" id="timeInBusiness" defaultValue="12" onChange={handleChange}>

@@ -89,13 +89,13 @@ const getAutoLoans = async () => {
     
     return response.data.records.map((record) => {
         const loanAmount = 15000;   //Default $15000 loan amount
+        const termMonths = 60;      //Default 5 year term
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
-        const maxTermMonths = record.fields["Max Term Length (mths)"];  //Given in months
-        const minMonthlyPayment = monthlyPayment(loanAmount, minApr, maxTermMonths);
-        const maxMonthlyPayment = monthlyPayment(loanAmount, maxApr, maxTermMonths);
-        const minInterest = simpleInterest(loanAmount, minApr, maxTermMonths);
-        const maxInterest = simpleInterest(loanAmount, maxApr, maxTermMonths);
+        const minMonthlyPayment = monthlyPayment(loanAmount, minApr, termMonths);
+        const maxMonthlyPayment = monthlyPayment(loanAmount, maxApr, termMonths);
+        const minInterest = simpleInterest(loanAmount, minApr, termMonths);
+        const maxInterest = simpleInterest(loanAmount, maxApr, termMonths);
 
         return {
             id: record.id,
@@ -109,7 +109,7 @@ const getAutoLoans = async () => {
             maxApr,
             minInterest,
             maxInterest,
-            maxTermMonths,
+            maxTermMonths: record.fields["Max Term Length (mths)"] || 84,
             minMonthlyPayment,
             maxMonthlyPayment, 
             maxVehicleAge: record.fields["Max Vehicle Age (yrs)"],  //Given in years

@@ -22,7 +22,7 @@ const HomeLoans = ({loans}) => (
                 </div>        
                 <div className="grid__col3">
                     <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
-                    <h5>Est. Interest</h5>
+                    <h5>Est. Total Interest</h5>
                 </div>
         
                 <div className="grid__col4">

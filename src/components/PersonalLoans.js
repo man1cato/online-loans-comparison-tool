@@ -21,8 +21,8 @@ const PersonalLoans = ({loans}) => (
                     <h5>Est. Monthly Payment</h5>
                 </div>        
                 <div className="grid__col3">
-                    <h3>{loan.minCreditScore}</h3>
-                    <h5>Min Credit Score</h5>
+                    <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
+                    <h5>Est. Total Interest</h5>
                 </div>
         
                 <div className="grid__col4">

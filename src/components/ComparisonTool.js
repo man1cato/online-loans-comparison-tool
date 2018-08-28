@@ -12,15 +12,18 @@ import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedIntere
 
 const filterLoans = (tool, loans, filters) => {
     let filteredLoans = loans;
-    if (tool === 'auto') {
-        filteredLoans = filteredLoans.filter((loan) => loan.purpose === filters.purpose);
-    }
     if (tool === 'business') {
         filteredLoans = filteredLoans.filter((loan) => 
             loan.minTimeInBusiness <= filters.timeInBusiness 
             && loan.minAnnualRevenue <= filters.annualRevenue
         ); 
     }
+    if (tool === 'auto') {
+        filteredLoans = filteredLoans.filter((loan) => 
+            loan.purpose === filters.purpose && 
+            loan.maxTermMonths >= filters.termMonths
+        );
+    }    
     if (tool === 'auto' || tool === 'personal') {
         filteredLoans = filteredLoans.filter((loan) => 
             loan.minLoanAmount <= filters.loanAmount 
@@ -30,13 +33,11 @@ const filterLoans = (tool, loans, filters) => {
     if (tool === 'personal') {
         filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
     }
-    console.log(filteredLoans);
     if (tool === 'home') {
         filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
     }
 
     filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);
-    console.log(filteredLoans);
     return filteredLoans;
 }
 
@@ -71,7 +72,8 @@ export default class ComparisonTool extends React.Component {
             auto: {
                 purpose: 'Purchase',
                 loanAmount: 15000,
-                creditScore: 720
+                creditScore: 720,
+                termMonths: 60
             },
             home: {
                 loanAmount: 200000,
@@ -94,7 +96,7 @@ export default class ComparisonTool extends React.Component {
         let value = e.target.value;
         value = numeral(value).value() ? numeral(value).value() : value;  //ISN'T ACCOUNTING FOR ZERO
         if (filter === 'loanAmount') { value = numeral(e.target.rawValue).value() };
-            
+
         this.setState((prevState) => {  
             const tool = prevState.tool;          
             let loans = {
@@ -104,27 +106,37 @@ export default class ComparisonTool extends React.Component {
                 home: this.props.homeLoans,
             }[tool];
 
-            if (filter === 'loanAmount') { 
-                if (tool === 'home') {
-                    loans = loans.map((loan) => {
-                        const minMonthlyPayment = homeFixedMonthlyPayment(value, loan.minApr, loan.termMonths);
-                        const maxMonthlyPayment = homeFixedMonthlyPayment(value, loan.maxApr, loan.termMonths);
+            if (filter === 'loanAmount') {                 
+                loans = loans.map((loan) => {
+                    if (tool === 'auto') {
+                        loan.minInterest = simpleInterest(value, loan.minApr, prevState.filters.termMonths);
+                        loan.maxInterest = simpleInterest(value, loan.maxApr, prevState.filters.termMonths);
+                        loan.minMonthlyPayment = monthlyPayment(value, loan.minApr, prevState.filters.termMonths);
+                        loan.maxMonthlyPayment = monthlyPayment(value, loan.maxApr, prevState.filters.termMonths);
+                    } else if (tool === 'home') {
+                        loan.minMonthlyPayment = homeFixedMonthlyPayment(value, loan.minApr, prevState.filters.termMonths);
+                        loan.maxMonthlyPayment = homeFixedMonthlyPayment(value, loan.maxApr, prevState.filters.termMonths);
                         loan.minInterest = homeFixedInterest(minMonthlyPayment, loan.termMonths, value);
                         loan.maxInterest = homeFixedInterest(maxMonthlyPayment, loan.termMonths, value);
-                        loan.minMonthlyPayment = minMonthlyPayment;
-                        loan.maxMonthlyPayment = maxMonthlyPayment;
-                        return loan;
-                    });
-                } else {
-                    loans = loans.map((loan) => {
+                    } else {
                         loan.minInterest = simpleInterest(value, loan.minApr, loan.minTermMonths);
                         loan.maxInterest = simpleInterest(value, loan.maxApr, loan.maxTermMonths);
                         loan.minMonthlyPayment = monthlyPayment(value, loan.minApr, loan.minTermMonths);
-                        loan.maxMonthlyPayment = monthlyPayment(value, loan.minApr, loan.minTermMonths);
-                        return loan;
-                    });        
-                }
+                        loan.maxMonthlyPayment = monthlyPayment(value, loan.maxApr, loan.maxTermMonths);
+                    }   
+                    return loan;
+                });      
             };
+
+            if (filter === 'termMonths') {
+                loans = loans.map((loan) => {
+                    loan.minInterest = simpleInterest(prevState.filters.loanAmount, loan.minApr, value);
+                    loan.maxInterest = simpleInterest(prevState.filters.loanAmount, loan.maxApr, value);
+                    loan.minMonthlyPayment = monthlyPayment(prevState.filters.loanAmount, loan.minApr, value);
+                    loan.maxMonthlyPayment = monthlyPayment(prevState.filters.loanAmount, loan.maxApr, value);
+                    return loan;
+                });                
+            }
 
             const filters = update(prevState.filters, {
                 [filter]: { $set: value }
