@@ -22,15 +22,15 @@ const LoanFilter = ({handleChange, tool, filters}) => (
 
         { tool === 'auto' && 
             <div className="form-group">
-                <label htmlFor="type">Type</label>
-                <select className="form-control" id="type" defaultValue="Purchase" onChange={handleChange}>
+                <label htmlFor="purpose">Purpose</label>
+                <select className="form-control" id="purpose" defaultValue="Purchase" onChange={handleChange}>
                     <option value="Purchase">Purchase</option>
                     <option value="Refinance">Refinance</option>
                 </select>
             </div>
         }
         
-        { tool === 'auto' && filters.type === 'Refinance' &&
+        { tool === 'auto' && filters.purpose === 'Refinance' &&
             <div className="form-group">
                 <label htmlFor="age">Vehicle Age</label>
                 <select className="form-control" id="age" defaultValue="0" onChange={handleChange}>
@@ -41,8 +41,24 @@ const LoanFilter = ({handleChange, tool, filters}) => (
             </div>
         }
 
+        { tool === 'home' && 
+            <div className="form-group">
+                <label htmlFor="termMonths">Type</label>
+                <select className="form-control" id="termMonths" defaultValue="360" onChange={handleChange}>
+                    <option value="360">30-Year Fixed</option>
+                    <option value="240">20-Year Fixed</option>
+                    <option value="180">15-Year Fixed</option>
+                    <option value="120">10-Year Fixed</option>
+                    <option value="96">7/1 ARM</option>
+                    <option value="72">5/1 ARM</option>
+                    <option value="48">3/1 ARM</option>
+                </select>
+            </div>
+        }
+
         { tool === 'business' &&
             <div>
+                
                 <div className="form-group">
                     <label htmlFor="timeInBusiness">Time in Business</label>
                     <select className="form-control" id="timeInBusiness" defaultValue="12" onChange={handleChange}>

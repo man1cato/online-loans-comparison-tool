@@ -1,17 +1,19 @@
 import React from 'react';
-import BusinessLoans from './BusinessLoans';
-import PersonalLoans from './PersonalLoans';
-import AutoLoans from './AutoLoans';
-import LoanFilter from './LoanFilter';
 import numeral from 'numeral';
 import update from 'immutability-helper';
 
-// import {getPersonalLoans, getAutoLoans} from '../utils';
+import BusinessLoans from './BusinessLoans';
+import PersonalLoans from './PersonalLoans';
+import AutoLoans from './AutoLoans';
+import HomeLoans from './HomeLoans';
+import LoanFilter from './LoanFilter';
+import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest} from '../utils';
+
 
 const filterLoans = (tool, loans, filters) => {
     let filteredLoans = loans;
     if (tool === 'auto') {
-        filteredLoans = filteredLoans.filter((loan) => loan.type === filters.type);
+        filteredLoans = filteredLoans.filter((loan) => loan.purpose === filters.purpose);
     }
     if (tool === 'business') {
         filteredLoans = filteredLoans.filter((loan) => 
@@ -19,23 +21,30 @@ const filterLoans = (tool, loans, filters) => {
             && loan.minAnnualRevenue <= filters.annualRevenue
         ); 
     }
-    if (tool !== 'business') {
+    if (tool === 'auto' || tool === 'personal') {
         filteredLoans = filteredLoans.filter((loan) => 
-        loan.minLoanAmount <= filters.loanAmount 
-        && loan.maxLoanAmount >= filters.loanAmount); 
+            loan.minLoanAmount <= filters.loanAmount 
+            && loan.maxLoanAmount >= filters.loanAmount
+        ); 
     }
     if (tool === 'personal') {
-        filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income ); 
+        filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
     }
+    console.log(filteredLoans);
+    if (tool === 'home') {
+        filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
+    }
+
     filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);
+    console.log(filteredLoans);
     return filteredLoans;
 }
+
 
 export default class ComparisonTool extends React.Component {    
     state = {
         tool: 'business',
         filters: {
-            type: 'Purchase',
             loanAmount: 50000,
             timeInBusiness: 12,
             annualRevenue: 150000,
@@ -45,13 +54,8 @@ export default class ComparisonTool extends React.Component {
     }
 
     handleTabClick = (e) => {
-        const tool = e.target.id;
-        const filteredLoans = {
-            business: this.props.businessLoans,
-            personal: this.props.personalLoans,
-            auto: this.props.autoLoans,
-            // home: this.props.homeLoans
-        }[tool];
+        const tool = e.target.id;        
+
         const filters = {
             business: {
                 loanAmount: 50000,
@@ -65,15 +69,19 @@ export default class ComparisonTool extends React.Component {
                 creditScore: 720
             },
             auto: {
-                type: 'Purchase',
+                purpose: 'Purchase',
                 loanAmount: 15000,
                 creditScore: 720
             },
             home: {
-                loanAmount: 250000,
-                creditScore: 720
-            },
+                loanAmount: 200000,
+                creditScore: 720,
+                termMonths: 360 
+            }
         }[tool];
+
+        const filteredLoans = filterLoans(tool, this.props[`${tool}Loans`], filters);
+        
         this.setState({
             tool,
             filteredLoans,
@@ -97,13 +105,25 @@ export default class ComparisonTool extends React.Component {
             }[tool];
 
             if (filter === 'loanAmount') { 
-                loans = loans.map((loan) => {
-                    loan.minInterest = value * loan.minApr/100 * loan.minTermLength/12;
-                    loan.maxInterest = value * loan.maxApr/100 * loan.maxTermLength/12;
-                    loan.minMonthlyPayment = value * (1 + loan.minApr/100 * loan.minTermLength/12) / (loan.minTermLength || loan.maxTermLength);
-                    loan.maxMonthlyPayment = value * (1 + loan.maxApr/100 * loan.maxTermLength/12) / loan.maxTermLength;
-                    return loan;
-                });        
+                if (tool === 'home') {
+                    loans = loans.map((loan) => {
+                        const minMonthlyPayment = homeFixedMonthlyPayment(value, loan.minApr, loan.termMonths);
+                        const maxMonthlyPayment = homeFixedMonthlyPayment(value, loan.maxApr, loan.termMonths);
+                        loan.minInterest = homeFixedInterest(minMonthlyPayment, loan.termMonths, value);
+                        loan.maxInterest = homeFixedInterest(maxMonthlyPayment, loan.termMonths, value);
+                        loan.minMonthlyPayment = minMonthlyPayment;
+                        loan.maxMonthlyPayment = maxMonthlyPayment;
+                        return loan;
+                    });
+                } else {
+                    loans = loans.map((loan) => {
+                        loan.minInterest = simpleInterest(value, loan.minApr, loan.minTermMonths);
+                        loan.maxInterest = simpleInterest(value, loan.maxApr, loan.maxTermMonths);
+                        loan.minMonthlyPayment = monthlyPayment(value, loan.minApr, loan.minTermMonths);
+                        loan.maxMonthlyPayment = monthlyPayment(value, loan.minApr, loan.minTermMonths);
+                        return loan;
+                    });        
+                }
             };
 
             const filters = update(prevState.filters, {
@@ -143,7 +163,7 @@ export default class ComparisonTool extends React.Component {
                             business: <BusinessLoans loans={this.state.filteredLoans} />,
                             personal: <PersonalLoans loans={this.state.filteredLoans} />,
                             auto: <AutoLoans loans={this.state.filteredLoans} />,
-                            home: null,
+                            home: <HomeLoans loans={this.state.filteredLoans} />,
                         }[this.state.tool]}
                     </div>
                 </div>
