@@ -34,7 +34,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: 10px;
-    text-align: center;
+    grid-row-gap: 10px;
 }
 
 .grid--loan {

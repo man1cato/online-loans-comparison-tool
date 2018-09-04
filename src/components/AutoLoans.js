@@ -29,16 +29,24 @@ const AutoLoans = ({loans}) => (
                     <img src={loan.logo} alt={loan.lender} />
                     <button className="btn btn-primary">Apply Now</button>
                 </div>
-        
-                <div className="grid__col1-2">
-                    <h4>Notes</h4>
-                    <div>{loan.notes}</div>
+
+                <div className="grid__col4 loan__details">
+                    <a data-toggle="collapse" href={`#option${i}Details`} role="button" aria-expanded="false" aria-controls={`option${i}Details`}>
+                        More details
+                    </a>
+                </div>
+                <div className="grid__col-span grid--4col collapse" id={`option${i}Details`}>
+                    <div className="grid__col1-2">
+                        <h4>Notes</h4>
+                        <div>{loan.notes}</div>
+                    </div>
+            
+                    <div className="grid__col3-4">
+                        <h4>Other Requirements</h4>
+                        <div>{loan.otherReqs}</div>
+                    </div>
                 </div>
         
-                <div className="grid__col3-4">
-                    <h4>Other Requirements</h4>
-                    <div>{loan.otherReqs}</div>
-                </div>
             </div>
         ))}
     </div>

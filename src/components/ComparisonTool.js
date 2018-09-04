@@ -17,6 +17,9 @@ const filterLoans = (tool, loans, filters) => {
             loan.minTimeInBusiness <= filters.timeInBusiness 
             && loan.minAnnualRevenue <= filters.annualRevenue
         ); 
+        if (filters.type !== 'All') {
+            filteredLoans = filteredLoans.filter((loan) => loan.type === filters.type); 
+        }
     }
     if (tool === 'auto') {
         filteredLoans = filteredLoans.filter((loan) => 
@@ -62,7 +65,8 @@ export default class ComparisonTool extends React.Component {
                 loanAmount: 50000,
                 timeInBusiness: 12,
                 annualRevenue: 150000,
-                creditScore: 720
+                creditScore: 720,
+                type: 'All'
             },
             personal: {
                 loanAmount: 10000,
@@ -157,7 +161,7 @@ export default class ComparisonTool extends React.Component {
                 <div className="grid">
                     <div className="grid__sidebar">
                         <LoanFilter 
-                            handleChange={this.handleFilterChange}
+                            handleFilterChange={this.handleFilterChange}
                             filters={this.state.filters}
                             tool={this.state.tool}
                         />
