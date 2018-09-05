@@ -7,42 +7,7 @@ import PersonalLoans from './PersonalLoans';
 import AutoLoans from './AutoLoans';
 import HomeLoans from './HomeLoans';
 import LoanFilter from './LoanFilter';
-import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest} from '../utils';
-
-
-const filterLoans = (tool, loans, filters) => {
-    let filteredLoans = loans;
-    if (tool === 'business') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.minTimeInBusiness <= filters.timeInBusiness 
-            && loan.minAnnualRevenue <= filters.annualRevenue
-        ); 
-        if (filters.type !== 'All') {
-            filteredLoans = filteredLoans.filter((loan) => loan.type === filters.type); 
-        }
-    }
-    if (tool === 'auto') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.purpose === filters.purpose && 
-            loan.maxTermMonths >= filters.termMonths
-        );
-    }    
-    if (tool === 'auto' || tool === 'personal') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.minLoanAmount <= filters.loanAmount 
-            && loan.maxLoanAmount >= filters.loanAmount
-        ); 
-    }
-    if (tool === 'personal') {
-        filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
-    }
-    if (tool === 'home') {
-        filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
-    }
-
-    filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);
-    return filteredLoans;
-}
+import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest, filterLoans} from '../utils';
 
 
 export default class ComparisonTool extends React.Component {    
@@ -66,7 +31,7 @@ export default class ComparisonTool extends React.Component {
                 timeInBusiness: 12,
                 annualRevenue: 150000,
                 creditScore: 720,
-                type: 'All'
+                type: ['Line of Credit', 'Term Loan', 'Equipment Financing', 'Invoice Factoring']
             },
             personal: {
                 loanAmount: 10000,
@@ -100,6 +65,16 @@ export default class ComparisonTool extends React.Component {
         let value = e.target.value;
         value = numeral(value).value() ? numeral(value).value() : value;  //ISN'T ACCOUNTING FOR ZERO
         if (filter === 'loanAmount') { value = numeral(e.target.rawValue).value() };
+
+        const options = e.target.options;
+        if (options) {
+            value = [];
+            for (let i = 0, l = options.length; i < l; i++) {
+                if (options[i].selected) {
+                    value.push(options[i].value);
+                }
+            }
+        }        
 
         this.setState((prevState) => {  
             const tool = prevState.tool;          
@@ -158,7 +133,16 @@ export default class ComparisonTool extends React.Component {
     render () {
         return (
             <div className="container">
+                <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
+                    <button id="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
+                    <button id="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
+                    <button id="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
+                    <button id="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
+                </div>
+
                 <div className="grid">
+                    <div className="grid__corner">Choose your options</div>
+
                     <div className="grid__sidebar">
                         <LoanFilter 
                             handleFilterChange={this.handleFilterChange}
@@ -167,13 +151,15 @@ export default class ComparisonTool extends React.Component {
                         />
                     </div>
 
-                    <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
-                        <button id="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
-                        <button id="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
-                        <button id="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
-                        <button id="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
+
+                    <div className={this.state.tool === 'business' ? 'grid__header--5' : 'grid__header'} role="group" aria-label="Tool tabs">
+                        {this.state.tool === 'business' && <div className="grid--col">Type</div>}
+                        <div className="grid--col">Est. APR</div>
+                        <div className="grid--col">{this.state.tool === 'business' ? 'Est. Interest' : 'Monthly Payment'}</div>
+                        <div className="grid--col">Min Credit Score</div>
+                        <div className="grid--col">Lender</div>
                     </div>
-                    
+
                     <div className="grid__body">
                         {{
                             business: <BusinessLoans loans={this.state.filteredLoans} />,

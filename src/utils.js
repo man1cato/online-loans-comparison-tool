@@ -10,6 +10,41 @@ const monthlyPayment = (loanAmount, apr, termMonths) => loanAmount * (1 + apr/10
 const homeFixedMonthlyPayment = (loanAmount, apr, termMonths) => apr/100/12 * loanAmount / (1 - Math.pow((1 + apr/100/12), (-1 * termMonths)));
 const homeFixedInterest = (monthlyPayment, termMonths, loanAmount) => monthlyPayment * termMonths - loanAmount;
 
+
+//Loan Filter
+const filterLoans = (tool, loans, filters) => {
+    let filteredLoans = loans;
+    if (tool === 'business') {
+        filteredLoans = filteredLoans.filter((loan) => 
+            loan.minTimeInBusiness <= filters.timeInBusiness 
+            && loan.minAnnualRevenue <= filters.annualRevenue 
+            && filters.type.includes(loan.type) 
+        );  
+    }
+    if (tool === 'auto') {
+        filteredLoans = filteredLoans.filter((loan) => 
+            loan.purpose === filters.purpose && 
+            loan.maxTermMonths >= filters.termMonths
+        );
+    }    
+    if (tool === 'auto' || tool === 'personal') {
+        filteredLoans = filteredLoans.filter((loan) => 
+            loan.minLoanAmount <= filters.loanAmount 
+            && loan.maxLoanAmount >= filters.loanAmount
+        ); 
+    }
+    if (tool === 'personal') {
+        filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
+    }
+    if (tool === 'home') {
+        filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
+    }
+
+    filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);
+    return filteredLoans;
+}
+
+
 // Airtable Calls
 const getBusinessLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Business Loans?api_key=${airtableApiKey}`);
@@ -157,6 +192,10 @@ const getHomeLoans = async () => {
 }
 
 
+
+
+
+
 module.exports = {
     monthlyPayment,
     simpleInterest,
@@ -165,5 +204,6 @@ module.exports = {
     getBusinessLoans,
     getPersonalLoans,
     getAutoLoans,
-    getHomeLoans
+    getHomeLoans,
+    filterLoans
 }

@@ -3,31 +3,63 @@
     grid-template-columns: 1fr 4fr;
     grid-template-rows: min-content auto;
     grid-template-areas: 
-        ". header"
-        ". body";
+        "corner header"
+        "sidebar body";
     grid-column-gap: 20px;
     grid-row-gap: 15px;
-    height: 100vh;
+    height: 90vh;
+    padding: $size-l 0;
+}
+
+.grid__corner {
+    grid-area: corner;
+    font-size: $font-l;
+    font-weight: 600;
+    color: $dark-blue-2;
+    place-self: center;
 }
 
 .grid__sidebar {
-    grid-column: 1;
-    grid-row: 2;
+    grid-area: sidebar;
     align-items: flex-start;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px 0 rgba(31, 31, 31, 0.14);
+    & label {
+        color: $primary-color;
+    }
+    & input, select {
+        margin: $size-s 0 $size-l 0;
+    }
 }
 
 .grid__header {
     grid-area: header;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 10px;
     grid-auto-flow: column;
     height: min-content;
+    color: $grey-3;
+    font-size: $font-s;
+    font-weight: 400;
+    text-align: center;
+    margin: 5px 0;
+    border-right: 1px solid $grey-3;
+    > * {
+        border-left: 1px solid $grey-3;
+    }
+}
+
+.grid__header--5 {
+    @extend .grid__header;
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .grid__body {
     grid-area: body;
     overflow: scroll;
+    padding-right: 10px;
+    margin-right: -25px;
 }
 
 .grid--4col {
@@ -48,7 +80,7 @@
     border-radius: 5px;
 }
 
-.grid--col {
+.grid__col {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,23 +89,28 @@
 }
 
 .grid__col1 {
-    @extend .grid--col;
+    @extend .grid__col;
     grid-column: 1;    
 }
 
 .grid__col2 {
-    @extend .grid--col;
+    @extend .grid__col;
     grid-column: 2;
 }
 
 .grid__col3 {
-    @extend .grid--col;
+    @extend .grid__col;
     grid-column: 3;
 }
 
 .grid__col4 {
-    @extend .grid--col;
+    @extend .grid__col;
     grid-column: 4;
+}
+
+.grid__col5 {
+    @extend .grid__col;
+    grid-column: 5;
 }
 
 .grid__col1-2 {
@@ -85,5 +122,5 @@
 }
 
 .grid__col-span {
-    grid-column: 1 / span 4;
+    grid-column: 1 / -1;
 }

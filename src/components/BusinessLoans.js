@@ -2,62 +2,63 @@ import React from 'react';
 import numeral from 'numeral';
 
 const BusinessLoans = ({loans}) => (
-    <div className="loan">
-        {/* <div className="grid--4col">
-            <h4>Est. APR</h4>
-            <h4>Est. Interest</h4>
-            <h4>Min Credit Score</h4>
-        </div> */}
+
+    <div className="accordion" id="accordion">
 
         {loans.map((loan, i) => (
-            <div className="grid--loan" key={i}>
-                <div className="grid__col1">
-                    <h3>{loan.minApr}% - {loan.maxApr}%</h3>
-                    <h5>Est. APR</h5>
-                </div>
-                <div className="grid__col2">
-                    <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
-                    <h5>Est. Interest</h5>
-                </div>        
-                <div className="grid__col3">
-                    <h3>{loan.minCreditScore}</h3>
-                    <h5>Min Credit Score</h5>
-                </div>
-        
-                <div className="grid__col4">
-                    <img src={loan.logo} alt={loan.lender} />
-                    <button className="btn btn-primary">Apply Now</button>
+            <div className="loan" key={i}>
+                
+                <div className="loan__main--business" >
+                    <div className="grid__col1">
+                        <h3>{loan.type}</h3>
+                    </div>
+
+                    <div className="grid__col2">
+                        <h3>{loan.minApr}% - {loan.maxApr}%</h3>
+                    </div>
+
+                    <div className="grid__col3">
+                        <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
+                    </div>        
+                    <div className="grid__col4">
+                        <h3>{loan.minCreditScore}</h3>
+                    </div>
+
+                    <div className="grid__col5">
+                        <img src={loan.logo} alt={loan.lender} />
+                        <button className="btn btn-secondary">Apply Now</button>
+                    </div>
+
+                    <div className="grid__col-span loan__collapser">
+                        <a href={`#loan${i}Details`} role="button" data-toggle="collapse" data-target={`#loan${i}Details`} aria-expanded="false"  aria-controls={`loan${i}Details`}>
+                            View Details
+                        </a>
+                    </div>
                 </div>
 
-                <div className="grid__col1-2">
-                    <b>Funding Type: </b>{loan.type}
-                </div>
-
-                <div className="grid__col4 loan__details">
-                    <a data-toggle="collapse" href={`#option${i}Details`} role="button" aria-expanded="false" aria-controls={`option${i}Details`}>
-                        More details
-                    </a>
-                </div>
-                <div className="grid__col-span grid--4col collapse" id={`option${i}Details`}>
-                    <div className="grid__col1-2">
-                        <h4>Pros</h4>
-                        <div>{loan.pros}</div>
-                    </div>
-            
-                    <div className="grid__col3-4">
-                        <h4>Cons</h4>
-                        <div>{loan.cons}</div>
-                    </div>
-            
-                    <div className="grid__col-span">
+                <div className="grid__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
+                    <div>
                         <h4>Other Requirements</h4>
                         <div>{loan.otherReqs}</div>
                     </div>
+
+                    <div>
+                        <h4>Pros</h4>
+                        <div>{loan.pros}</div>
+                    </div>
+
+                    <div>
+                        <h4>Cons</h4>
+                        <div>{loan.cons}</div>
+                    </div>
                 </div>
-        
+
             </div>
         ))}
+
     </div>
-)
+
+);
+
 
 export default BusinessLoans;

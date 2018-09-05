@@ -3,39 +3,35 @@ import numeral from 'numeral';
 
 
 const HomeLoans = ({loans}) => (
-    <div className="loan">
-        {/* <div className="grid--4col">
-            <h4 className="grid__col1">Est. APR</h4>
-            <h4 className="grid__col2">Est. Monthly Payment</h4>
-            <h4 className="grid__col3">Interest</h4>
-        </div> */}
+
+    <div className="accordion" id="accordion">
 
         {loans.map((loan, i) => (
-            <div className="grid--loan" key={i}>
-                <div className="grid__col1">
-                    <h3>{loan.minApr}% - {loan.maxApr}%</h3>
-                    <h5>Est. APR</h5>
-                </div>
-                <div className="grid__col2">
-                    <h3>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</h3>
-                    <h5>Est. Monthly Payment</h5>
-                </div>        
-                <div className="grid__col3">
-                    <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
-                    <h5>Est. Total Interest</h5>
-                </div>
-        
-                <div className="grid__col4">
-                    <img src={loan.logo} alt={loan.lender} />
-                    <button className="btn btn-primary">Apply Now</button>
+            <div className="loan" key={i}>
+                
+                <div className="loan__main" >
+                    <div className="grid__col1">
+                        <h3>{loan.minApr}% - {loan.maxApr}%</h3>
+                    </div>
+                    <div className="grid__col2">
+                        <h3>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</h3>
+                    </div>        
+                    <div className="grid__col3">
+                        <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
+                    </div>            
+                    <div className="grid__col4">
+                        <img src={loan.logo} alt={loan.lender} />
+                        <button className="btn btn-secondary">Apply Now</button>
+                    </div>
+
+                    <div className="grid__col-span loan__collapser">
+                        <a href={`#loan${i}Details`} role="button" data-toggle="collapse" data-target={`#loan${i}Details`} aria-expanded="false"  aria-controls={`loan${i}Details`}>
+                            View Details
+                        </a>
+                    </div>
                 </div>
 
-                <div className="grid__col4 loan__details">
-                    <a data-toggle="collapse" href={`#option${i}Details`} role="button" aria-expanded="false" aria-controls={`option${i}Details`}>
-                        More details
-                    </a>
-                </div>
-                <div className="grid__col-span grid--4col collapse" id={`option${i}Details`}>
+                <div className="grid__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
                     <div className="grid__col1-2">
                         <h4>Notes</h4>
                         <div>{loan.notes}</div>
@@ -46,9 +42,13 @@ const HomeLoans = ({loans}) => (
                         <div>{loan.otherReqs}</div>
                     </div>
                 </div>
+
             </div>
         ))}
+
     </div>
-)
+
+);
+
 
 export default HomeLoans;

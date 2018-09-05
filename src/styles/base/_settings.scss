@@ -1,10 +1,10 @@
 //COLORS
 $primary-color: #445CA4;
 $secondary-color: #63A1F3;
-$accent-blue-1:	#AFE8FE;
-$accent-blue-2:	#8BC7F7;
-$accentdark-blue-1:	#508BDA;
-$accentdark-blue-2:	#434588;
+$blue-1:	#AFE8FE;
+$blue-2:	#8BC7F7;
+$dark-blue-1:	#508BDA;
+$dark-blue-2:	#434588;
 $grey-1: #EDF2F7;
 $grey-2:	#C0CCD8;
 $grey-3:	#8D9DAC;
@@ -13,7 +13,13 @@ $dark-grey-2:	#5C6373;
 $dark-grey-3:	#3D404A;
 
 //FONT SIZES
-$font-xs: 0.6rem;
-$font-s: 0.8rem;
+$font-xs: 0.7rem;
+$font-s: 0.9rem;
+$font-m: 1rem;
 $font-l: 1.2rem;
 $font-xl: 1.4rem;
+
+//SIZING/SPACING
+$size-s: 0.5rem;
+$size-m: 1rem;
+$size-l: 2rem;

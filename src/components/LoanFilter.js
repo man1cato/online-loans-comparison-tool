@@ -73,13 +73,17 @@ const LoanFilter = ({handleFilterChange, tool, filters}) => (
         { tool === 'business' &&
             <div>                
                 <div className="form-group">
-                    <label htmlFor="type">Funding Type</label>
-                    <select className="form-control" id="type" defaultValue="All" onChange={handleFilterChange}>
-                        <option value="All">All</option>
-                        <option value="Line of Credit">Line of Credit</option>
-                        <option value="Term Loan">Term Loan</option>
+                    <label htmlFor="type">Funding Type(s)</label>
+                    <select multiple 
+                        className="form-control" 
+                        id="type" 
+                        defaultValue={['Line of Credit', 'Term Loan', 'Equipment Financing', 'Invoice Factoring']} 
+                        onChange={handleFilterChange}
+                    >
                         <option value="Equipment Financing">Equipment Financing</option>
                         <option value="Invoice Factoring">Invoice Factoring</option>
+                        <option value="Line of Credit">Line of Credit</option>
+                        <option value="Term Loan">Term Loan</option>
                     </select>        
                 </div>
 

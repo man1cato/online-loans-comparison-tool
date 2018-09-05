@@ -15,3 +15,23 @@
 .form-control {
     box-sizing: border-box;
 }
+
+.btn {
+    border-radius: 100px;
+    padding: $size-s $size-l;
+    letter-spacing: 1px; 
+}
+
+.btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+}
+
+.btn-secondary {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+    & :hover {
+        background-color: $primary-color;
+        border-color: $primary-color;
+    }
+}
