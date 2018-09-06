@@ -1,8 +1,9 @@
 import React from 'react';
 import numeral from 'numeral';
 
+import Collapser from './Collapser';
 
-const PersonalLoans = ({loans}) => (
+const PersonalLoans = ({loans, handleCollapse}) => (
 
     <div className="accordion" id="accordion">
 
@@ -10,29 +11,25 @@ const PersonalLoans = ({loans}) => (
             <div className="loan" key={i}>
                 
                 <div className="loan__main" >
-                    <div className="grid__col1">
+                    <div className="loan__col1">
                         <h3>{loan.minApr}% - {loan.maxApr}%</h3>
                     </div>
-                    <div className="grid__col2">
+                    <div className="loan__col2">
                         <h3>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</h3>
                     </div>        
-                    <div className="grid__col3">
+                    <div className="loan__col3 loan__right-divider">
                         <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                     </div>
 
-                    <div className="grid__col4">
+                    <div className="loan__col4">
                         <img src={loan.logo} alt={loan.lender} />
-                        <button className="btn btn-secondary">Apply Now</button>
+                        <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
                     </div>
 
-                    <div className="grid__col-span loan__collapser">
-                        <a href={`#loan${i}Details`} role="button" data-toggle="collapse" data-target={`#loan${i}Details`} aria-expanded="false"  aria-controls={`loan${i}Details`}>
-                            View Details
-                        </a>
-                    </div>
+                    <Collapser i={i} handleCollapse={handleCollapse}/>
                 </div>
 
-                <div className="grid__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
+                <div className="loan__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
                     <div className="loan__right-divider">
                         <h4>Other Requirements</h4>
                         {loan.otherReqs ? 

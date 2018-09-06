@@ -129,6 +129,21 @@ export default class ComparisonTool extends React.Component {
         })
     }   
 
+    handleCollapse = (e) => {
+        const id = e.target.id;
+        const target = document.getElementById(id);
+        const status = target.getAttribute("alt");
+
+        if (status === "View Details") {
+            target.setAttribute("src", "/images/cta-details-hide.png");
+            target.setAttribute("srcSet", "images/cta-details-hide@2x.png 2x, images/cta-details-hide@3x.png 3x");
+            target.setAttribute("alt", "Hide Details");
+        } else {
+            target.setAttribute("src", "/images/cta-details-view.png");
+            target.setAttribute("srcSet", "images/cta-details-view@2x.png 2x, images/cta-details-view@3x.png 3x");
+            target.setAttribute("alt", "View Details");
+        }
+    }
 
     render () {
         return (
@@ -162,10 +177,10 @@ export default class ComparisonTool extends React.Component {
 
                     <div className="grid__body">
                         {{
-                            business: <BusinessLoans loans={this.state.filteredLoans} />,
-                            personal: <PersonalLoans loans={this.state.filteredLoans} />,
-                            auto: <AutoLoans loans={this.state.filteredLoans} />,
-                            home: <HomeLoans loans={this.state.filteredLoans} />,
+                            business: <BusinessLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,
+                            personal: <PersonalLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,
+                            auto: <AutoLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,
+                            home: <HomeLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,
                         }[this.state.tool]}
                     </div>
                 </div>

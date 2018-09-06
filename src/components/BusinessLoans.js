@@ -1,7 +1,9 @@
 import React from 'react';
 import numeral from 'numeral';
 
-const BusinessLoans = ({loans}) => (
+import Collapser from './Collapser';
+
+const BusinessLoans = ({loans, handleCollapse}) => (
 
     <div className="accordion" id="accordion">
 
@@ -28,12 +30,9 @@ const BusinessLoans = ({loans}) => (
                         <img src={loan.logo} alt={loan.lender} />
                         <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
                     </div>
+                    
+                    <Collapser i={i} handleCollapse={handleCollapse}/>
 
-                    <div className="loan__col-span loan__collapser">
-                        <a href={`#loan${i}Details`} role="button" data-toggle="collapse" data-target={`#loan${i}Details`} aria-expanded="false"  aria-controls={`loan${i}Details`}>
-                            View Details
-                        </a>
-                    </div>
                 </div>
 
                 <div className="loan__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
