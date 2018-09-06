@@ -1,51 +1,14 @@
 import axios from 'axios';
+import _ from 'lodash';
+
+import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest} from './utils';
 
 const airtableBaseUrl = 'https://api.airtable.com/v0/apprEaBSfPkubZY2R';
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
 
-
-// Calculator Formulas
-const simpleInterest = (loanAmount, apr, termMonths) => loanAmount * apr/100 * termMonths/12;
-const monthlyPayment = (loanAmount, apr, termMonths) => loanAmount * (1 + apr/100 * termMonths/12) / termMonths;
-const homeFixedMonthlyPayment = (loanAmount, apr, termMonths) => apr/100/12 * loanAmount / (1 - Math.pow((1 + apr/100/12), (-1 * termMonths)));
-const homeFixedInterest = (monthlyPayment, termMonths, loanAmount) => monthlyPayment * termMonths - loanAmount;
+const createListArray = (string) => _.compact(string.split("- "));
 
 
-//Loan Filter
-const filterLoans = (tool, loans, filters) => {
-    let filteredLoans = loans;
-    if (tool === 'business') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.minTimeInBusiness <= filters.timeInBusiness 
-            && loan.minAnnualRevenue <= filters.annualRevenue 
-            && filters.type.includes(loan.type) 
-        );  
-    }
-    if (tool === 'auto') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.purpose === filters.purpose && 
-            loan.maxTermMonths >= filters.termMonths
-        );
-    }    
-    if (tool === 'auto' || tool === 'personal') {
-        filteredLoans = filteredLoans.filter((loan) => 
-            loan.minLoanAmount <= filters.loanAmount 
-            && loan.maxLoanAmount >= filters.loanAmount
-        ); 
-    }
-    if (tool === 'personal') {
-        filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
-    }
-    if (tool === 'home') {
-        filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
-    }
-
-    filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);
-    return filteredLoans;
-}
-
-
-// Airtable Calls
 const getBusinessLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Business Loans?api_key=${airtableApiKey}`);
     
@@ -72,9 +35,10 @@ const getBusinessLoans = async () => {
             maxTermMonths,
             minInterest,
             maxInterest, 
-            pros: record.fields["Pros"], 
-            cons: record.fields["Cons"], 
-            otherReqs: record.fields["Other Requirements"] || 'None'
+            pros: createListArray(record.fields["Pros"]), 
+            cons: createListArray(record.fields["Cons"]), 
+            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+            ctaLink: record.fields["CTA Link"]
         }
     });
 }
@@ -113,8 +77,9 @@ const getPersonalLoans = async () => {
             maxTermMonths,
             minMonthlyPayment,
             maxMonthlyPayment, 
-            otherReqs: record.fields["Other Requirements"] || 'None',
-            notes: record.fields["Notes"]
+            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+            notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
+            ctaLink: record.fields["CTA Link"]
         }
     });
 }
@@ -149,9 +114,10 @@ const getAutoLoans = async () => {
             maxMonthlyPayment, 
             maxVehicleAge: record.fields["Max Vehicle Age (yrs)"],  //Given in years
             maxVehicleMileage: record.fields["Max Vehicle Mileage"],
-            otherReqs: record.fields["Other Requirements"] || 'None',
             excludedStates: record.fields["Excluded States"],
-            notes: record.fields["Notes"]
+            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+            notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined, 
+            ctaLink: record.fields["CTA Link"]
         }
     });
 }
@@ -185,8 +151,9 @@ const getHomeLoans = async () => {
             maxMonthlyPayment, 
             minInterest,
             maxInterest,
-            otherReqs: record.fields["Other Requirements"] || 'None',
-            notes: record.fields["Notes"]
+            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+            notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
+            ctaLink: record.fields["CTA Link"]
         }
     });
 }
@@ -197,13 +164,8 @@ const getHomeLoans = async () => {
 
 
 module.exports = {
-    monthlyPayment,
-    simpleInterest,
-    homeFixedMonthlyPayment,
-    homeFixedInterest,
     getBusinessLoans,
     getPersonalLoans,
     getAutoLoans,
-    getHomeLoans,
-    filterLoans
+    getHomeLoans
 }

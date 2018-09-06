@@ -43,10 +43,10 @@
     font-size: $font-s;
     font-weight: 400;
     text-align: center;
-    margin: 5px 0;
     border-right: 1px solid $grey-3;
     > * {
         border-left: 1px solid $grey-3;
+        padding: $size-s 0;
     }
 }
 
@@ -86,6 +86,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 0 $size-l;
+    margin: $size-l 0;
 }
 
 .grid__col1 {

@@ -9,47 +9,71 @@ const BusinessLoans = ({loans}) => (
             <div className="loan" key={i}>
                 
                 <div className="loan__main--business" >
-                    <div className="grid__col1">
+                    <div className="loan__col1">
                         <h3>{loan.type}</h3>
                     </div>
 
-                    <div className="grid__col2">
+                    <div className="loan__col2">
                         <h3>{loan.minApr}% - {loan.maxApr}%</h3>
                     </div>
 
-                    <div className="grid__col3">
+                    <div className="loan__col3">
                         <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                     </div>        
-                    <div className="grid__col4">
+                    <div className="loan__col4 loan__right-divider">
                         <h3>{loan.minCreditScore}</h3>
                     </div>
 
-                    <div className="grid__col5">
+                    <div className="loan__col5">
                         <img src={loan.logo} alt={loan.lender} />
-                        <button className="btn btn-secondary">Apply Now</button>
+                        <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
                     </div>
 
-                    <div className="grid__col-span loan__collapser">
+                    <div className="loan__col-span loan__collapser">
                         <a href={`#loan${i}Details`} role="button" data-toggle="collapse" data-target={`#loan${i}Details`} aria-expanded="false"  aria-controls={`loan${i}Details`}>
                             View Details
                         </a>
                     </div>
                 </div>
 
-                <div className="grid__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
-                    <div>
+                <div className="loan__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
+                    <div className="loan__right-divider">
                         <h4>Other Requirements</h4>
-                        <div>{loan.otherReqs}</div>
+                        {loan.otherReqs ? 
+                            <ul>
+                                {loan.otherReqs.map((item, j) => (
+                                    <li key={`${i}req${j}`}>{item}</li>
+                                ))}
+                            </ul>
+                            :
+                            <p>None</p>
+                        }
                     </div>
 
                     <div>
                         <h4>Pros</h4>
-                        <div>{loan.pros}</div>
+                        {loan.pros ? 
+                            <ul>
+                                {loan.pros.map((item, j) => (
+                                    <li key={`${i}pro${j}`}>{item}</li>
+                                ))}
+                            </ul>
+                            :
+                            <p>None</p>
+                        }
                     </div>
 
                     <div>
                         <h4>Cons</h4>
-                        <div>{loan.cons}</div>
+                        {loan.cons ? 
+                            <ul>
+                                {loan.cons.map((item, j) => (
+                                    <li key={`${i}con${j}`}>{item}</li>
+                                ))}
+                            </ul>
+                            :
+                            <p>None</p>
+                        }
                     </div>
                 </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap';
-import {getBusinessLoans, getPersonalLoans, getAutoLoans, getHomeLoans} from './utils'
+import {getBusinessLoans, getPersonalLoans, getAutoLoans, getHomeLoans} from './utils/airtableCalls'
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import ComparisonTool from './components/ComparisonTool';

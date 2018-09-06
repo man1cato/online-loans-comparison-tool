@@ -7,7 +7,7 @@ import PersonalLoans from './PersonalLoans';
 import AutoLoans from './AutoLoans';
 import HomeLoans from './HomeLoans';
 import LoanFilter from './LoanFilter';
-import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest, filterLoans} from '../utils';
+import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest, filterLoans} from '../utils/utils';
 
 
 export default class ComparisonTool extends React.Component {    
@@ -153,11 +153,11 @@ export default class ComparisonTool extends React.Component {
 
 
                     <div className={this.state.tool === 'business' ? 'grid__header--5' : 'grid__header'} role="group" aria-label="Tool tabs">
-                        {this.state.tool === 'business' && <div className="grid--col">Type</div>}
-                        <div className="grid--col">Est. APR</div>
-                        <div className="grid--col">{this.state.tool === 'business' ? 'Est. Interest' : 'Monthly Payment'}</div>
-                        <div className="grid--col">Min Credit Score</div>
-                        <div className="grid--col">Lender</div>
+                        {this.state.tool === 'business' && <div>Type</div>}
+                        <div>Est. APR</div>
+                        <div>{this.state.tool === 'business' ? 'Est. Interest' : 'Monthly Payment'}</div>
+                        <div>Min Credit Score</div>
+                        <div>Lender</div>
                     </div>
 
                     <div className="grid__body">
