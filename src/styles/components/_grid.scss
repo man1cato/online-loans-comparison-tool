@@ -49,6 +49,8 @@
     border-right: 1px solid $grey-3;
     > * {
         border-left: 1px solid $grey-3;
+        border-top: none;
+        border-bottom: none;
         padding: $size-s 0;
     }
 }

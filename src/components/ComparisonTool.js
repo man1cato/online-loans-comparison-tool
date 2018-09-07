@@ -1,12 +1,14 @@
 import React from 'react';
 import numeral from 'numeral';
 import update from 'immutability-helper';
+import _ from 'lodash';
 
 import BusinessLoans from './BusinessLoans';
 import PersonalLoans from './PersonalLoans';
 import AutoLoans from './AutoLoans';
 import HomeLoans from './HomeLoans';
 import LoanFilter from './LoanFilter';
+import Sorter from './Sorter';
 import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest, filterLoans} from '../utils/utils';
 
 
@@ -19,7 +21,8 @@ export default class ComparisonTool extends React.Component {
             annualRevenue: 150000,
             creditScore: 720
         },
-        filteredLoans: this.props.businessLoans
+        filteredLoans: this.props.businessLoans,
+        sortedBy: "sortType"
     }
 
     handleTabClick = (e) => {
@@ -51,12 +54,15 @@ export default class ComparisonTool extends React.Component {
             }
         }[tool];
 
+        const sortedBy = tool === 'business' ? 'sortType' : 'sortApr';
+
         const filteredLoans = filterLoans(tool, this.props[`${tool}Loans`], filters);
         
         this.setState({
             tool,
             filteredLoans,
-            filters
+            filters,
+            sortedBy
         })
     }
 
@@ -145,6 +151,30 @@ export default class ComparisonTool extends React.Component {
         }
     }
 
+    handleSort = (e) => {
+        const sortedBy = this.state.sortedBy;
+        const id = e.target.id;
+        const value = e.target.value;
+        const name = e.target.name;
+        const target = document.getElementById(id);
+        let order = "asc";
+
+        if (sortedBy !== id) {
+            document.getElementById(sortedBy).innerHTML = document.getElementById(sortedBy).getAttribute('value');
+        }
+
+        if (target.innerHTML.endsWith("↑")) {
+            target.innerHTML = value + " ↓";
+            order = "desc";
+        } else {
+            target.innerHTML = value + " ↑"
+        }
+        this.setState((prevState) => ({
+            filteredLoans: _.orderBy(prevState.filteredLoans, [name], [order]),
+            sortedBy: id
+        }));
+    }
+
     render () {
         return (
             <div className="container">
@@ -166,15 +196,7 @@ export default class ComparisonTool extends React.Component {
                         />
                     </div>
 
-
-                    <div className={this.state.tool === 'business' ? 'grid__header--5' : 'grid__header'} role="group" aria-label="Tool tabs">
-                        {this.state.tool === 'business' && <div>Type</div>}
-                        <div>Est. APR</div>
-                        {this.state.tool !== 'business' && <div>Est. Monthly Payment</div>}
-                        <div>Est. Interest</div>
-                        {this.state.tool === 'business' && <div>Min Credit Score</div>}                        
-                        <div>Lender</div>
-                    </div>
+                    <Sorter tool={this.state.tool} handleSort={this.handleSort} />                    
 
                     <div className="grid__body">
                         {{

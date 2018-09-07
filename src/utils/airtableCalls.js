@@ -12,7 +12,7 @@ const createListArray = (string) => _.compact(string.split("- "));
 const getBusinessLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Business Loans?api_key=${airtableApiKey}`);
     
-    return _.sortBy(response.data.records.map((record) => {
+    return _.orderBy(response.data.records.map((record) => {
         const loanAmount = 50000; //Default $50000 loan amount
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
@@ -47,7 +47,7 @@ const getBusinessLoans = async () => {
 const getPersonalLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Personal Loans?api_key=${airtableApiKey}`);
     
-    return _.sortBy(response.data.records.map((record) => {
+    return _.orderBy(response.data.records.map((record) => {
         const loanAmount = 10000;   //Default $10000 loan amount
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
@@ -125,7 +125,7 @@ const getAutoLoans = async () => {
         }));
     } while (offset);
     
-    return _.sortBy(loans, ['minApr']);
+    return _.orderBy(loans, ['minApr']);
 }
 
 const getHomeLoans = async () => {
@@ -168,7 +168,7 @@ const getHomeLoans = async () => {
         }));
     } while (!!offset);   
     
-    return _.sortBy(loans, ['minApr']);
+    return _.orderBy(loans, ['minApr']);
 }
 
 
