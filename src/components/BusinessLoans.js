@@ -35,44 +35,46 @@ const BusinessLoans = ({loans, handleCollapse}) => (
 
                 </div>
 
-                <div className="loan__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
-                    <div className="loan__right-divider">
-                        <h4>Other Requirements</h4>
-                        {loan.otherReqs ? 
-                            <ul>
-                                {loan.otherReqs.map((item, j) => (
-                                    <li key={`${i}req${j}`}>{item}</li>
-                                ))}
-                            </ul>
-                            :
-                            <p>None</p>
-                        }
-                    </div>
+                <div className="loan__col-span collapse" id={`loan${i}Details`} data-parent="#accordion">
+                    <div className="loan__details">
+                        <div className="loan__right-divider">
+                            <h4>Other Requirements</h4>
+                            {loan.otherReqs ? 
+                                <ul>
+                                    {loan.otherReqs.map((item, j) => (
+                                        <li key={`${i}req${j}`}>{item}</li>
+                                    ))}
+                                </ul>
+                                :
+                                <p>None</p>
+                            }
+                        </div>
 
-                    <div>
-                        <h4>Pros</h4>
-                        {loan.pros ? 
-                            <ul>
-                                {loan.pros.map((item, j) => (
-                                    <li key={`${i}pro${j}`}>{item}</li>
-                                ))}
-                            </ul>
-                            :
-                            <p>None</p>
-                        }
-                    </div>
+                        <div>
+                            <h4>Pros</h4>
+                            {loan.pros ? 
+                                <ul>
+                                    {loan.pros.map((item, j) => (
+                                        <li key={`${i}pro${j}`}>{item}</li>
+                                    ))}
+                                </ul>
+                                :
+                                <p>None</p>
+                            }
+                        </div>
 
-                    <div>
-                        <h4>Cons</h4>
-                        {loan.cons ? 
-                            <ul>
-                                {loan.cons.map((item, j) => (
-                                    <li key={`${i}con${j}`}>{item}</li>
-                                ))}
-                            </ul>
-                            :
-                            <p>None</p>
-                        }
+                        <div>
+                            <h4>Cons</h4>
+                            {loan.cons ? 
+                                <ul>
+                                    {loan.cons.map((item, j) => (
+                                        <li key={`${i}con${j}`}>{item}</li>
+                                    ))}
+                                </ul>
+                                :
+                                <p>None</p>
+                            }
+                        </div>
                     </div>
                 </div>
 

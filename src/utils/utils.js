@@ -24,8 +24,8 @@ const filterLoans = (tool, loans, filters) => {
     }
     if (tool === 'auto') {
         filteredLoans = filteredLoans.filter((loan) => 
-            loan.purpose === filters.purpose && 
-            loan.maxTermMonths >= filters.termMonths
+            loan.purpose === filters.purpose 
+            && loan.maxTermMonths >= filters.termMonths
         );
     }    
     if (tool === 'auto' || tool === 'personal') {
@@ -38,7 +38,10 @@ const filterLoans = (tool, loans, filters) => {
         filteredLoans = filteredLoans.filter((loan) => loan.minIncome <= filters.income); 
     }
     if (tool === 'home') {
-        filteredLoans = filteredLoans.filter((loan) => loan.termMonths === filters.termMonths);
+        filteredLoans = filteredLoans.filter((loan) => 
+            loan.purpose === filters.purpose
+            && loan.termMonths === filters.termMonths
+        );
     }
 
     filteredLoans = filteredLoans.filter((loan) => loan.minCreditScore <= filters.creditScore);

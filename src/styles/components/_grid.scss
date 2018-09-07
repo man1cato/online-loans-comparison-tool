@@ -17,6 +17,7 @@
     font-weight: 600;
     color: $dark-blue-2;
     place-self: center;
+    text-align: center;
 }
 
 .grid__sidebar {
@@ -27,6 +28,8 @@
     box-shadow: 0 2px 10px 0 rgba(31, 31, 31, 0.14);
     & label {
         color: $primary-color;
+        font-size: $font-s;
+        // font-weight: bold;
     }
     & input, select {
         margin: $size-s 0 $size-l 0;

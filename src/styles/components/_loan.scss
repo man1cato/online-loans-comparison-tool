@@ -59,8 +59,8 @@
 .loan__col1 {
     @extend .loan__col;
     grid-column: 1;    
-    justify-self: left;
-    text-align: left;
+    // justify-self: left;
+    // text-align: left;
 }
 
 .loan__col2 {
@@ -99,11 +99,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-flow: column;
-    grid-column-gap: $size-l;
     background-color: $grey-1;
-    padding: $size-l;
+    padding: $size-l 0;
     border-top: solid 1px rgba(0,0,0,.125);
     border-radius: 0 0 6px 6px;
+    > * {
+        padding: 0 $size-l;
+    }
 }
 
 .loan__right-divider {

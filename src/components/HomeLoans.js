@@ -28,32 +28,33 @@ const HomeLoans = ({loans, handleCollapse}) => (
                     <Collapser i={i} handleCollapse={handleCollapse}/>
                 </div>
 
-                <div className="loan__col-span loan__details collapse" id={`loan${i}Details`} data-parent="#accordion">
-                    <div className="loan__right-divider">
-                        <h4>Other Requirements</h4>
-                        {loan.otherReqs ? 
-                            <ul>
-                                {loan.otherReqs.map((item, j) => (
-                                    <li key={`${i}req${j}`}>{item}</li>
-                                ))}
-                            </ul>
-                            :
-                            <p>None</p>
-                        }
+                <div className="loan__col-span collapse" id={`loan${i}Details`} data-parent="#accordion">
+                    <div className="loan__details">
+                        <div className="loan__right-divider">
+                            <h4>Other Requirements</h4>
+                            {loan.otherReqs ? 
+                                <ul>
+                                    {loan.otherReqs.map((item, j) => (
+                                        <li key={`${i}req${j}`}>{item}</li>
+                                    ))}
+                                </ul>
+                                :
+                                <p>None</p>
+                            }
+                        </div>
 
-                    </div>
-
-                    <div>
-                        <h4>Notes</h4>
-                        {loan.notes ? 
-                            <ul>
-                                {loan.notes.map((item, j) => (
-                                    <li key={`${i}note${j}`}>{item}</li>
-                                ))}
-                            </ul>
-                            :
-                            <p>None</p>
-                        }
+                        <div>
+                            <h4>Notes</h4>
+                            {loan.notes ? 
+                                <ul>
+                                    {loan.notes.map((item, j) => (
+                                        <li key={`${i}note${j}`}>{item}</li>
+                                    ))}
+                                </ul>
+                                :
+                                <p>None</p>
+                            }
+                        </div>
                     </div>
                 </div>
 

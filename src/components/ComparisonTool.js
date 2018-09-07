@@ -23,8 +23,7 @@ export default class ComparisonTool extends React.Component {
     }
 
     handleTabClick = (e) => {
-        const tool = e.target.id;        
-
+        const tool = e.target.name;
         const filters = {
             business: {
                 loanAmount: 50000,
@@ -45,6 +44,7 @@ export default class ComparisonTool extends React.Component {
                 termMonths: 60
             },
             home: {
+                purpose: 'Purchase',
                 loanAmount: 200000,
                 creditScore: 720,
                 termMonths: 360 
@@ -61,20 +61,20 @@ export default class ComparisonTool extends React.Component {
     }
 
     handleFilterChange = (e) => {
-        const filter = e.target.id;
+        const filter = e.target.name;
         let value = e.target.value;
         value = numeral(value).value() ? numeral(value).value() : value;  //ISN'T ACCOUNTING FOR ZERO
         if (filter === 'loanAmount') { value = numeral(e.target.rawValue).value() };
 
-        const options = e.target.options;
-        if (options) {
+        if (e.target.multiple) {
+            const options = e.target.options;
             value = [];
             for (let i = 0, l = options.length; i < l; i++) {
                 if (options[i].selected) {
                     value.push(options[i].value);
                 }
-            }
-        }        
+            }                 
+        }
 
         this.setState((prevState) => {  
             const tool = prevState.tool;          
@@ -95,8 +95,8 @@ export default class ComparisonTool extends React.Component {
                     } else if (tool === 'home') {
                         loan.minMonthlyPayment = homeFixedMonthlyPayment(value, loan.minApr, prevState.filters.termMonths);
                         loan.maxMonthlyPayment = homeFixedMonthlyPayment(value, loan.maxApr, prevState.filters.termMonths);
-                        loan.minInterest = homeFixedInterest(minMonthlyPayment, loan.termMonths, value);
-                        loan.maxInterest = homeFixedInterest(maxMonthlyPayment, loan.termMonths, value);
+                        loan.minInterest = homeFixedInterest(loan.minMonthlyPayment, loan.termMonths, value);
+                        loan.maxInterest = homeFixedInterest(loan.maxMonthlyPayment, loan.termMonths, value);
                     } else {
                         loan.minInterest = simpleInterest(value, loan.minApr, loan.minTermMonths);
                         loan.maxInterest = simpleInterest(value, loan.maxApr, loan.maxTermMonths);
@@ -149,10 +149,10 @@ export default class ComparisonTool extends React.Component {
         return (
             <div className="container">
                 <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
-                    <button id="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
-                    <button id="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
-                    <button id="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
-                    <button id="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
+                    <button name="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
+                    <button name="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
+                    <button name="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
+                    <button name="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
                 </div>
 
                 <div className="grid">
@@ -170,8 +170,9 @@ export default class ComparisonTool extends React.Component {
                     <div className={this.state.tool === 'business' ? 'grid__header--5' : 'grid__header'} role="group" aria-label="Tool tabs">
                         {this.state.tool === 'business' && <div>Type</div>}
                         <div>Est. APR</div>
-                        <div>{this.state.tool === 'business' ? 'Est. Interest' : 'Monthly Payment'}</div>
-                        <div>Min Credit Score</div>
+                        {this.state.tool !== 'business' && <div>Est. Monthly Payment</div>}
+                        <div>Est. Interest</div>
+                        {this.state.tool === 'business' && <div>Min Credit Score</div>}                        
                         <div>Lender</div>
                     </div>
 

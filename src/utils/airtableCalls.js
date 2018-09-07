@@ -12,7 +12,7 @@ const createListArray = (string) => _.compact(string.split("- "));
 const getBusinessLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Business Loans?api_key=${airtableApiKey}`);
     
-    return response.data.records.map((record) => {
+    return _.sortBy(response.data.records.map((record) => {
         const loanAmount = 50000; //Default $50000 loan amount
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
@@ -40,14 +40,14 @@ const getBusinessLoans = async () => {
             otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
             ctaLink: record.fields["CTA Link"]
         }
-    });
+    }),['type', 'minApr']);
 }
 
 
 const getPersonalLoans = async () => {
     const response = await axios.get(`${airtableBaseUrl}/Personal Loans?api_key=${airtableApiKey}`);
     
-    return response.data.records.map((record) => {
+    return _.sortBy(response.data.records.map((record) => {
         const loanAmount = 10000;   //Default $10000 loan amount
         const minApr = record.fields["Min APR"];    //Given in percentage value
         const maxApr = record.fields["Max APR"];    //Given in percentage value
@@ -81,81 +81,94 @@ const getPersonalLoans = async () => {
             notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
             ctaLink: record.fields["CTA Link"]
         }
-    });
+    }), ['minApr']);
 }
 
 const getAutoLoans = async () => {
-    const response = await axios.get(`${airtableBaseUrl}/Auto Loans?api_key=${airtableApiKey}`);
-    
-    return response.data.records.map((record) => {
-        const loanAmount = 15000;   //Default $15000 loan amount
-        const termMonths = 60;      //Default 5 year term
-        const minApr = record.fields["Min APR"];    //Given in percentage value
-        const maxApr = record.fields["Max APR"];    //Given in percentage value
-        const minMonthlyPayment = monthlyPayment(loanAmount, minApr, termMonths);
-        const maxMonthlyPayment = monthlyPayment(loanAmount, maxApr, termMonths);
-        const minInterest = simpleInterest(loanAmount, minApr, termMonths);
-        const maxInterest = simpleInterest(loanAmount, maxApr, termMonths);
+    let loans = [];
+    let offset;
+    do {
+        const response = await axios.get(`${airtableBaseUrl}/Auto Loans?api_key=${airtableApiKey}`);
+        offset = response.data.offset;
+        loans = loans.concat(response.data.records.map((record) => {
+            const loanAmount = 15000;   //Default $15000 loan amount
+            const termMonths = 60;      //Default 5 year term
+            const minApr = record.fields["Min APR"];    //Given in percentage value
+            const maxApr = record.fields["Max APR"];    //Given in percentage value
+            const minMonthlyPayment = monthlyPayment(loanAmount, minApr, termMonths);
+            const maxMonthlyPayment = monthlyPayment(loanAmount, maxApr, termMonths);
+            const minInterest = simpleInterest(loanAmount, minApr, termMonths);
+            const maxInterest = simpleInterest(loanAmount, maxApr, termMonths);
 
-        return {
-            id: record.id,
-            lender: record.fields["Lender Text"], 
-            logo: record.fields.Logo[0].url, 
-            purpose: record.fields.Purpose,
-            minCreditScore: record.fields["Min Credit Score"],
-            minLoanAmount: record.fields["Min Amount"],
-            maxLoanAmount: record.fields["Max Amount"] || 100000,
-            minApr, 
-            maxApr,
-            minInterest,
-            maxInterest,
-            maxTermMonths: record.fields["Max Term Length (mths)"] || 84,
-            minMonthlyPayment,
-            maxMonthlyPayment, 
-            maxVehicleAge: record.fields["Max Vehicle Age (yrs)"],  //Given in years
-            maxVehicleMileage: record.fields["Max Vehicle Mileage"],
-            excludedStates: record.fields["Excluded States"],
-            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
-            notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined, 
-            ctaLink: record.fields["CTA Link"]
-        }
-    });
+            return {
+                id: record.id,
+                lender: record.fields["Lender Text"], 
+                logo: record.fields.Logo[0].url, 
+                purpose: record.fields.Purpose,
+                minCreditScore: record.fields["Min Credit Score"],
+                minLoanAmount: record.fields["Min Amount"],
+                maxLoanAmount: record.fields["Max Amount"] || 100000,
+                minApr, 
+                maxApr,
+                minInterest,
+                maxInterest,
+                maxTermMonths: record.fields["Max Term Length (mths)"] || 84,
+                minMonthlyPayment,
+                maxMonthlyPayment, 
+                maxVehicleAge: record.fields["Max Vehicle Age (yrs)"],  //Given in years
+                maxVehicleMileage: record.fields["Max Vehicle Mileage"],
+                excludedStates: record.fields["Excluded States"],
+                otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+                notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined, 
+                ctaLink: record.fields["CTA Link"]
+            }
+        }));
+    } while (offset);
+    
+    return _.sortBy(loans, ['minApr']);
 }
 
 const getHomeLoans = async () => {
-    const response = await axios.get(`${airtableBaseUrl}/Home Loans?api_key=${airtableApiKey}`);
-    
-    return response.data.records.map((record) => {
-        const loanAmount = 200000; //Default $200000 loan amount
-        const termMonths = record.fields["Term Length (mths)"];  //Given in months
-        const minApr = record.fields["Min APR"];    //Given in percentage value
-        const maxApr = record.fields["Max APR"];    //Given in percentage value
-        const minMonthlyPayment = homeFixedMonthlyPayment(loanAmount, minApr, termMonths);
-        const maxMonthlyPayment = homeFixedMonthlyPayment(loanAmount, maxApr, termMonths);
-        const minInterest = homeFixedInterest(minMonthlyPayment, termMonths, loanAmount);
-        const maxInterest = homeFixedInterest(maxMonthlyPayment, termMonths, loanAmount);
+    let loans = [];
+    let offset;
+    do {
+        const response = await axios.get(`${airtableBaseUrl}/Home Loans?api_key=${airtableApiKey}`+ (!!offset && `&offset=${offset}` || '') );
+        offset = response.data.offset;
 
-        return {
-            id: record.id,
-            lender: record.fields["Lender Text"], 
-            logo: record.fields.Logo[0].url, 
-            purpose: record.fields.Purpose,
-            type: record.fields.Type,
-            minCreditScore: record.fields["Min Credit Score"],
-            minIncome: record.fields["Min Income"],
-            minCreditHistory: record.fields["Min Credit History (yrs)"],
-            minApr, 
-            maxApr,
-            termMonths,
-            minMonthlyPayment,
-            maxMonthlyPayment, 
-            minInterest,
-            maxInterest,
-            otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
-            notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
-            ctaLink: record.fields["CTA Link"]
-        }
-    });
+        loans = loans.concat(response.data.records.map((record) => {
+            const loanAmount = 200000; //Default $200000 loan amount
+            const termMonths = record.fields["Term Length (mths)"];  //Given in months
+            const minApr = record.fields["Min APR"];    //Given in percentage value
+            const maxApr = record.fields["Max APR"];    //Given in percentage value
+            const minMonthlyPayment = homeFixedMonthlyPayment(loanAmount, minApr, termMonths);
+            const maxMonthlyPayment = homeFixedMonthlyPayment(loanAmount, maxApr, termMonths);
+            const minInterest = homeFixedInterest(minMonthlyPayment, termMonths, loanAmount);
+            const maxInterest = homeFixedInterest(maxMonthlyPayment, termMonths, loanAmount);
+    
+            return {
+                id: record.id,
+                lender: record.fields["Lender Text"], 
+                logo: record.fields.Logo[0].url, 
+                purpose: record.fields.Purpose,
+                type: record.fields.Type,
+                minCreditScore: record.fields["Min Credit Score"],
+                minIncome: record.fields["Min Income"],
+                minCreditHistory: record.fields["Min Credit History (yrs)"],
+                minApr, 
+                maxApr,
+                termMonths,
+                minMonthlyPayment,
+                maxMonthlyPayment, 
+                minInterest,
+                maxInterest,
+                otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
+                notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
+                ctaLink: record.fields["CTA Link"]
+            }
+        }));
+    } while (!!offset);   
+    
+    return _.sortBy(loans, ['minApr']);
 }
 
 
