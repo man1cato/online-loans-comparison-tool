@@ -6,3 +6,10 @@ a {
     text-decoration: none;
     color: currentColor;
 }
+
+.arrow-up {
+    transform: rotate(180deg);
+}
+.arrow-down {
+    transform: initial;
+}

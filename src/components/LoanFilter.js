@@ -1,149 +1,29 @@
 import React from 'react';
-import Cleave from 'cleave.js/react';
+import FilterForm from './FilterForm';
 
-const LoanFilter = ({handleFilterChange, tool, filters}) => (
-    <form>        
-        { (tool === 'auto' || tool === 'home') &&
-            <div className="form-group">
-                <label>Loan Purpose</label>
-                <div className="form__radio-group">
-                    <label >
-                        <input type="radio" name="purpose" id="purpose1" value="Purchase" defaultChecked onChange={handleFilterChange}/>
-                        <span>Purchase</span>
-                    </label>
-                    <label >
-                        <input type="radio" name="purpose" id="purpose2" value="Refinance" onChange={handleFilterChange}/>
-                        <span>Refinance</span>
-                    </label>
-                </div>           
-            </div>
-        }
+const LoanFilter = ({tool, filters, handleFilterChange, handleCollapse}) => (
+    <div className="filter">
+        <a  className="filter__collapser"
+            id="filterCollapser"
+            href="#filterForm"
+            role="button" 
+            data-toggle="collapse" 
+            data-target="#filterForm"
+            aria-expanded="false"  
+            aria-controls="#filterForm"
+            onClick={handleCollapse}
+        >
+            <img  
+                className="arrow-down"           
+                src="/images/arrow-icon-down.png"    
+            />
+            <span> View Filters</span>
+        </a>
 
-        <div className="form-group">
-            <label htmlFor="loanAmount">Funding Amount</label>
-            <Cleave 
-                className="form-control input-block-level"
-                type="text" 
-                name="loanAmount" 
-                options={{
-                    numeral: true, 
-                    numeralThousandsGroupStyle: 'thousand',
-                    numeralPositiveOnly: true,
-                    prefix: "$"
-                }}
-                value={filters.loanAmount}
-                onChange={handleFilterChange}
-            /> 
-        </div>
-
-        { tool === 'auto' && 
-            <div className="form-group">
-                <label htmlFor="termMonths">Loan Term</label>
-                <select className="form-control" name="termMonths" defaultValue="60" onChange={handleFilterChange}>
-                    <option value="24">2 yrs (24 mths)</option>
-                    <option value="36">3 yrs (36 mths)</option>
-                    <option value="48">4 yrs (48 mths)</option>
-                    <option value="60">5 yrs (60 mths)</option>
-                    <option value="72">6 yrs (72 mths)</option>
-                    <option value="84">7 yrs (84 mths)</option>
-                </select>
-            </div>
-        }
+        <FilterForm id="filterForm" tool={tool} filters={filters} handleFilterChange={handleFilterChange} />
+        <FilterForm tool={tool} filters={filters} handleFilterChange={handleFilterChange} />
         
-        { tool === 'auto' && filters.purpose === 'Refinance' &&
-            <div className="form-group">
-                <label htmlFor="age">Vehicle Age</label>
-                <select className="form-control" name="age" defaultValue="0" onChange={handleFilterChange}>
-                    <option value="0">{"<"} 5 yrs</option>
-                    <option value="5">5 - 10 yrs</option>
-                    <option value="11">11+ yrs</option>
-                </select>
-            </div>
-        }
-
-        { tool === 'home' && 
-            <div className="form-group">
-                <label htmlFor="termMonths">Type</label>
-                <select className="form-control" name="termMonths" defaultValue="360" onChange={handleFilterChange}>
-                    <option value="360">30-Year Fixed</option>
-                    <option value="240">20-Year Fixed</option>
-                    <option value="180">15-Year Fixed</option>
-                    <option value="120">10-Year Fixed</option>
-                    <option value="96">7/1 ARM</option>
-                    <option value="72">5/1 ARM</option>
-                    <option value="48">3/1 ARM</option>
-                </select>
-            </div>
-        }
-
-        { tool === 'business' &&
-            <div>                
-                <div className="form-group">
-                    <label htmlFor="type">Funding Type(s)</label>
-                    <select multiple 
-                        className="form-control" 
-                        name="type" 
-                        defaultValue={['Line of Credit', 'Term Loan', 'Equipment Financing', 'Invoice Factoring']} 
-                        onChange={handleFilterChange}
-                    >
-                        <option value="Equipment Financing">Equipment Financing</option>
-                        <option value="Invoice Factoring">Invoice Factoring</option>
-                        <option value="Line of Credit">Line of Credit</option>
-                        <option value="Term Loan">Term Loan</option>
-                    </select>        
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="timeInBusiness">Time in Business</label>
-                    <select className="form-control" name="timeInBusiness" defaultValue="12" onChange={handleFilterChange}>
-                        <option value="0">{"<"} 6 months</option>
-                        <option value="6">6 months - 1 year</option>
-                        <option value="12">1 - 2 years</option>
-                        <option value="24">2+ years</option>
-                    </select>        
-                </div>
-                
-                <div className="form-group">
-                    <label htmlFor="annualRevenue">Annual Revenue</label>
-                    <select className="form-control" name="annualRevenue" defaultValue="100000" onChange={handleFilterChange}>
-                        <option value="0">{"<"} $10,000</option>
-                        <option value="10000">$10,000 - $24,999</option>
-                        <option value="25000">$25,000 - $49,999</option>
-                        <option value="50000">$50,000 - $74,999</option>
-                        <option value="75000">$75,000 - $99,999</option>
-                        <option value="100000">$100,000 - $149,999</option>
-                        <option value="150000">$150,000 - $199,999</option>
-                        <option value="200000">$200,000+</option>
-                    </select>  
-                </div>
-            </div>
-        }
-
-        { tool === 'personal' &&            
-            <div className="form-group">
-                <label htmlFor="income">Annual Income</label>    
-                <select className="form-control" name="income" defaultValue="50000" onChange={handleFilterChange}>
-                    <option value="0">{"<"} $15,000</option>
-                    <option value="15000">$15,000 - $29,999</option>
-                    <option value="30000">$30,000 - $49,999</option>
-                    <option value="50000">$50,000 - $99,999</option>
-                    <option value="100000">$100,000 - $149,999</option>
-                    <option value="150000">$150,000+</option>
-                </select>  
-            </div>
-        }
-
-        <div className="form-group">
-                <label htmlFor="creditScore">Credit Score</label>  
-            <select className="form-control" name="creditScore" defaultValue="720" onChange={handleFilterChange}>
-                <option value="720">Excellent (720+)</option>
-                <option value="690">Good (690 - 719)</option>
-                <option value="630">Average (630 - 689)</option>
-                <option value="0">Poor ({"<"} 629)</option>
-            </select>  
-        </div>
-        
-    </form>
+    </div>    
 )
 
 export default LoanFilter;

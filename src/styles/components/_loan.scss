@@ -27,12 +27,6 @@
     & li, p {
         font-size: $font-s;
     }
-
-    & img {
-        max-width: 130px;
-        max-height: 46px;
-        margin-bottom: 10px;
-    }
 }
 
 .loan__main {
@@ -86,12 +80,23 @@
     grid-column: 1 / -1;
 }
 
+.loan__lender-logo {
+    max-width: 130px;
+    max-height: 46px;
+    margin-bottom: 10px;
+}
 
 .loan__collapser {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: $secondary-color;
     font-size: $font-s;
     margin-top: -$size-xl;
+    > * {
+        pointer-events: none;
+        margin: 0;
+    }
 }
 
 .loan__details {

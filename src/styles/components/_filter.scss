@@ -1,0 +1,73 @@
+.filter {
+    grid-area: header1;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px 0 rgba(31, 31, 31, 0.14);
+
+    @include media-breakpoint-up(xl) {
+        grid-area: sidebar;
+    }
+}
+
+.filter__collapser {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $secondary-color;
+    font-size: $font-s;
+    > * {
+        pointer-events: none;
+    }
+    @include media-breakpoint-up(xl) {
+        display: none;
+    }
+}
+
+.filter__form {
+    display: flex;
+    justify-content: space-between;
+    padding-top: $size-m;
+    & label {
+        color: $primary-color;
+        font-size: $font-s;
+    }
+    & input, select {
+        margin: $size-s 0 $size-l 0;
+    }
+    @include media-breakpoint-up(xl) {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}
+.filter__form--header {
+    @extend .filter__form;
+    @include media-breakpoint-up(xl) {
+        display: none;
+    }
+}
+.filter__form--sidebar {
+    @extend .filter__form;
+    display: none;
+    @include media-breakpoint-up(xl) {
+        display: block;
+    }
+}
+
+.filter__group {
+    @extend .form-group;
+    height: min-content;
+}
+
+.filter__radio-group {
+    display: flex;
+    flex-direction: column;
+    & label {
+        display: inline-flex;
+        color: #495057;
+        font-size: $font-m;
+        margin: $size-xs 0;
+    }
+    & input {
+        margin: 0 $size-s 0 0;
+    }
+}

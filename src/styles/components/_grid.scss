@@ -1,23 +1,34 @@
 .grid {
     display: grid;
-    grid-template-columns: 1fr 4fr;
-    grid-template-rows: min-content auto;
+    grid-template-rows: min-content min-content auto;
     grid-template-areas: 
-        "corner header"
-        "sidebar body";
+        "header1"
+        "header2"
+        "body";
     grid-column-gap: 20px;
     grid-row-gap: 15px;
     height: 90vh;
     padding: $size-l 0;
+    @media (min-width: 1200px) {
+        grid-template-columns: 1fr 4fr;
+        grid-template-rows: min-content auto;
+        grid-template-areas: 
+        "corner header2"
+        "sidebar body";
+    }
 }
 
 .grid__corner {
-    grid-area: corner;
-    font-size: $font-l;
-    font-weight: 600;
-    color: $dark-blue-2;
-    place-self: center;
-    text-align: center;
+    visibility: hidden;
+    @media (min-width: 1200px) {
+        visibility: visible;
+        grid-area: corner;
+        font-size: $font-l;
+        font-weight: 600;
+        color: $dark-blue-2;
+        place-self: center;
+        text-align: center;
+    }
 }
 
 .grid__sidebar {
@@ -37,7 +48,7 @@
 }
 
 .grid__header {
-    grid-area: header;
+    grid-area: header2;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-flow: column;

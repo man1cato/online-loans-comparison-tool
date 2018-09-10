@@ -138,16 +138,18 @@ export default class ComparisonTool extends React.Component {
     handleCollapse = (e) => {
         const id = e.target.id;
         const target = document.getElementById(id);
-        const status = target.getAttribute("alt");
+        const arrow = target.children[0];
+        const text = target.children[1];
+        // alert(arrow.className);
 
-        if (status === "View Details") {
-            target.setAttribute("src", "/images/cta-details-hide.png");
-            target.setAttribute("srcSet", "images/cta-details-hide@2x.png 2x, images/cta-details-hide@3x.png 3x");
-            target.setAttribute("alt", "Hide Details");
+        if (arrow.className === "arrow-up") {
+            arrow.setAttribute("alt", "arrow-down");
+            arrow.className = "arrow-down";
+            text.innerHTML = id === "filterCollapser" ? " Hide Filters" :" Hide Details";
         } else {
-            target.setAttribute("src", "/images/cta-details-view.png");
-            target.setAttribute("srcSet", "images/cta-details-view@2x.png 2x, images/cta-details-view@3x.png 3x");
-            target.setAttribute("alt", "View Details");
+            arrow.setAttribute("alt", "arrow-up");
+            arrow.className = "arrow-up";
+            text.innerHTML = id === "filterCollapser" ? " View Filters" :" View Details";
         }
     }
 
@@ -187,14 +189,13 @@ export default class ComparisonTool extends React.Component {
 
                 <div className="grid">
                     <div className="grid__corner">Choose your options</div>
-
-                    <div className="grid__sidebar">
-                        <LoanFilter 
-                            handleFilterChange={this.handleFilterChange}
-                            filters={this.state.filters}
-                            tool={this.state.tool}
-                        />
-                    </div>
+                    
+                    <LoanFilter 
+                        tool={this.state.tool}
+                        filters={this.state.filters}
+                        handleFilterChange={this.handleFilterChange}
+                        handleCollapse={this.handleCollapse}
+                    />                
 
                     <Sorter tool={this.state.tool} handleSort={this.handleSort} />                    
 

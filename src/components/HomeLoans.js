@@ -1,7 +1,7 @@
 import React from 'react';
 import numeral from 'numeral';
 
-import Collapser from './Collapser';
+import LoanCollapser from './LoanCollapser';
 
 const HomeLoans = ({loans, handleCollapse}) => (
 
@@ -21,11 +21,11 @@ const HomeLoans = ({loans, handleCollapse}) => (
                         <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                     </div>            
                     <div className="loan__col4">
-                        <img src={loan.logo} alt={loan.lender} />
+                        <img className="loan__lender-logo" src={loan.logo} alt={loan.lender} />
                         <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
                     </div>
 
-                    <Collapser i={i} handleCollapse={handleCollapse}/>
+                    <LoanCollapser loanId={i} handleCollapse={handleCollapse}/>
                 </div>
 
                 <div className="loan__col-span collapse" id={`loan${i}Details`} data-parent="#accordion">
