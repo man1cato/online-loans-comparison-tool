@@ -11,51 +11,46 @@ import LoanFilter from './LoanFilter';
 import Sorter from './Sorter';
 import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedInterest, filterLoans} from '../utils/utils';
 
+const defaultFilters = {
+    business: {
+        loanAmount: 50000,
+        timeInBusiness: 12,
+        annualRevenue: 150000,
+        creditScore: 720,
+        type: ['Line of Credit', 'Term Loan', 'Equipment Financing', 'Invoice Factoring']
+    },
+    personal: {
+        loanAmount: 10000,
+        income: 50000,
+        creditScore: 720
+    },
+    auto: {
+        purpose: 'Purchase',
+        loanAmount: 15000,
+        creditScore: 720,
+        termMonths: 60
+    },
+    home: {
+        purpose: 'Purchase',
+        loanAmount: 200000,
+        creditScore: 720,
+        termMonths: 360 
+    }
+}
+
 
 export default class ComparisonTool extends React.Component {    
     state = {
-        tool: 'business',
-        filters: {
-            loanAmount: 50000,
-            timeInBusiness: 12,
-            annualRevenue: 150000,
-            creditScore: 720
-        },
-        filteredLoans: this.props.businessLoans,
-        sortedBy: "sortType"
+        tool: this.props.tool,
+        filters: defaultFilters[this.props.tool],
+        filteredLoans: this.props[`${this.props.tool}Loans`],
+        sortedBy: this.props.tool === 'business' ? 'sortType' : 'sortApr'
     }
 
     handleTabClick = (e) => {
         const tool = e.target.name;
-        const filters = {
-            business: {
-                loanAmount: 50000,
-                timeInBusiness: 12,
-                annualRevenue: 150000,
-                creditScore: 720,
-                type: ['Line of Credit', 'Term Loan', 'Equipment Financing', 'Invoice Factoring']
-            },
-            personal: {
-                loanAmount: 10000,
-                income: 50000,
-                creditScore: 720
-            },
-            auto: {
-                purpose: 'Purchase',
-                loanAmount: 15000,
-                creditScore: 720,
-                termMonths: 60
-            },
-            home: {
-                purpose: 'Purchase',
-                loanAmount: 200000,
-                creditScore: 720,
-                termMonths: 360 
-            }
-        }[tool];
-
+        const filters = defaultFilters[tool];
         const sortedBy = tool === 'business' ? 'sortType' : 'sortApr';
-
         const filteredLoans = filterLoans(tool, this.props[`${tool}Loans`], filters);
         
         this.setState({
@@ -140,7 +135,6 @@ export default class ComparisonTool extends React.Component {
         const target = document.getElementById(id);
         const arrow = target.children[0];
         const text = target.children[1];
-        // alert(arrow.className);
 
         if (arrow.className === "arrow-up") {
             arrow.setAttribute("alt", "arrow-down");
@@ -180,12 +174,15 @@ export default class ComparisonTool extends React.Component {
     render () {
         return (
             <div className="container">
-                <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
-                    <button name="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
-                    <button name="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
-                    <button name="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
-                    <button name="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
-                </div>
+
+                {this.props.multi &&
+                    <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
+                        <button name="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
+                        <button name="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
+                        <button name="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
+                        <button name="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
+                    </div>
+                }
 
                 <div className="grid">
                     <div className="grid__corner">Choose your options</div>

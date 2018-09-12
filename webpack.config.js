@@ -10,10 +10,16 @@ module.exports = (env) => {
 
     return {
         mode: isProduction ? 'production' : 'development',
-        entry: ['babel-polyfill','./src/app.js'],
+        entry: {
+            all: ['babel-polyfill', './src/all-tools.js'],
+            business: ['babel-polyfill', './src/business-tool.js'],
+            personal: ['babel-polyfill', './src/personal-tool.js'],
+            auto: ['babel-polyfill', './src/auto-tool.js'],
+            home: ['babel-polyfill', './src/home-tool.js']
+        },
         output: {
             path: path.join(__dirname, 'public', 'dist'),
-            filename: 'bundle.js'
+            filename: '[name].bundle.js'
         },
         module: {
             rules: [{
@@ -25,25 +31,20 @@ module.exports = (env) => {
                 use: CSSExtract.extract({
                     use: [{
                         loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
+                        options: { sourceMap: true }
                     }, {
                         loader: 'postcss-loader', // Needed for Bootstrap
                         options: {
-                          plugins:  () => { // post css plugins, can be exported to postcss.config.js
-                            return [
-                              require('autoprefixer')
-                            ];
-                          }
+                            plugins:  () => ( [ require('autoprefixer') ] )
                         }
                     }, {
                         loader: 'sass-loader',
-                        options: {
-                            sourceMap: true
-                        }
+                        options: { sourceMap: true }
                     }]
                 })
+            }, {
+                test: /\.handlebars$/,
+                loader: 'handlebars-loader'
             }]
         },
         plugins: [

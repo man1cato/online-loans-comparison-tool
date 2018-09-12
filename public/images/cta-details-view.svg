@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="143" height="25" viewBox="0 0 143 25">
-    <g fill="none" fill-rule="evenodd">
-        <path fill="none" d="M0 0h143v25H0z"/>
-        <text fill="#63A1F3" font-family="SourceSansPro-Semibold, Source Sans Pro" font-size="16" font-weight="500">
-            <tspan x="40.384" y="18">View Details</tspan>
-        </text>
-        <path stroke="#63A1F3" stroke-width="2.2" d="M13 9l6.677 7.35L26.462 9"/>
-    </g>
-</svg>

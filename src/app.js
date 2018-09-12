@@ -6,27 +6,39 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import ComparisonTool from './components/ComparisonTool';
 
+export default async (tool, multi = false) => {
+    console.log('tool: ', tool);
+    try {  
+        let businessLoans, personalLoans, autoLoans, homeLoans;
+        if (!!multi) {
+             [businessLoans, personalLoans, autoLoans, homeLoans] = await Promise.all([
+                getBusinessLoans(), 
+                getPersonalLoans(), 
+                getAutoLoans(), 
+                getHomeLoans()
+            ]);
+        } else {            
+            businessLoans = tool === 'business' && await getBusinessLoans();
+            personalLoans = tool === 'personal' && await getPersonalLoans(); 
+            autoLoans = tool === 'auto' && await getAutoLoans();
+            homeLoans = tool === 'home' && await getHomeLoans();
+        }
+        const props = {
+            businessLoans,
+            personalLoans,
+            autoLoans,
+            homeLoans
+        }        
 
-const getLoanData = async () => {
-    try {
-        const [businessLoans, personalLoans, autoLoans, homeLoans] = await Promise.all([
-            getBusinessLoans(), 
-            getPersonalLoans(), 
-            getAutoLoans(), 
-            getHomeLoans()
-        ]);
         ReactDOM.render(
             <ComparisonTool 
-                businessLoans={businessLoans}
-                personalLoans={personalLoans}
-                autoLoans={autoLoans}
-                homeLoans={homeLoans}
+                {...props}
+                tool={tool}
+                multi={multi}
             />, document.getElementById('app')
         );
     } catch (e) {
-        console.log("Error at app.js", e);
+        console.log(e);
     }
 }
-
-getLoanData();
 
