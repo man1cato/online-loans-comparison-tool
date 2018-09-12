@@ -173,8 +173,7 @@ export default class ComparisonTool extends React.Component {
 
     render () {
         return (
-            <div className="container">
-
+            <div>
                 {this.props.multi &&
                     <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
                         <button name="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
