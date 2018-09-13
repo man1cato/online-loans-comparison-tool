@@ -10,33 +10,36 @@ const BusinessLoans = ({loans, handleCollapse}) => (
         {loans.map((loan, i) => (
             <div className="loan" key={i}>
                 
-                <div className="loan__main--business" >
-                    <div className="loan__col1">
-                        <h3>{loan.type}</h3>
-                    </div>
+                <div className="loan__main" >
 
-                    <div className="loan__col2">
-                        <h3>{loan.minApr}% - {loan.maxApr}%</h3>
-                    </div>
+                    <div className="loan__content--5col">
+                        <div className="loan__col">
+                            <h3>{loan.type}</h3>
+                        </div>
 
-                    <div className="loan__col3">
-                        <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
-                    </div>        
-                    <div className="loan__col4 loan__right-divider">
-                        <h3>{loan.minCreditScore}</h3>
-                    </div>
+                        <div className="loan__col">
+                            <h3>{loan.minApr}% - {loan.maxApr}%</h3>
+                        </div>
 
-                    <div className="loan__col5">
-                        <img className="loan__lender-logo" src={loan.logo} alt={loan.lender} />
-                        <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
+                        <div className="loan__col">
+                            <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
+                        </div>        
+                        <div className="loan__col loan__right-divider">
+                            <h3>{loan.minCreditScore}</h3>
+                        </div>
+
+                        <div className="loan__col--cta">
+                            <div className="loan__lender-logo"><img src={loan.logo} alt={loan.lender} /></div>
+                            <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
+                        </div>
                     </div>
                     
                     <LoanCollapser loanId={i} handleCollapse={handleCollapse}/>
 
                 </div>
 
-                <div className="loan__col-span collapse" id={`loan${i}Details`} data-parent="#accordion">
-                    <div className="loan__details">
+                <div className="collapse" id={`loan${i}Details`} data-parent="#accordion">
+                    <div className="loan__details--3col">
                         <div className="loan__right-divider">
                             <h4>Other Requirements</h4>
                             {loan.otherReqs ? 

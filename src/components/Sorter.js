@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Sorter = ({tool, handleSort}) => (
-    <div className={tool === 'business' ? 'grid__header--5' : 'grid__header'} role="group" aria-label="Sorting tabs">    
+    <div className={tool === 'business' ? 'layout__header--5col' : 'layout__header'} role="group" aria-label="Sorting tabs">    
         {tool === 'business' && 
             <button 
                 id="sortType" 
@@ -54,6 +54,7 @@ const Sorter = ({tool, handleSort}) => (
             </button>
         }
         <button 
+            className="layout__header__lender"
             id="sortLender" 
             name="lender" 
             value="Lender"

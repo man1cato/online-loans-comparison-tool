@@ -2,8 +2,8 @@ import React from 'react';
 
 
 const LoanCollapser = ({loanId, handleCollapse}) => (
-    <a className="loan__col-span loan__collapser" 
-        id={`loan${loanId}Collapser`} alt="View Details"
+    <a className="loan__collapser" 
+        id={`loan${loanId}Collapser`}
         href={`#loan${loanId}Details`} 
         role="button" 
         data-toggle="collapse" 

@@ -139,11 +139,11 @@ export default class ComparisonTool extends React.Component {
         if (arrow.className === "arrow-up") {
             arrow.setAttribute("alt", "arrow-down");
             arrow.className = "arrow-down";
-            text.innerHTML = id === "filterCollapser" ? " Hide Filters" :" Hide Details";
+            text.innerHTML = id === "filterCollapser" ? " View Filters" :" View Details";
         } else {
             arrow.setAttribute("alt", "arrow-up");
             arrow.className = "arrow-up";
-            text.innerHTML = id === "filterCollapser" ? " View Filters" :" View Details";
+            text.innerHTML = id === "filterCollapser" ? " Hide Filters" :" Hide Details";
         }
     }
 
@@ -173,18 +173,18 @@ export default class ComparisonTool extends React.Component {
 
     render () {
         return (
-            <div>
+            <div className="container">
                 {this.props.multi &&
-                    <div className="grid__header btn-toolbar" role="group" aria-label="Tool tabs">
-                        <button name="business" className={`grid__col1 btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
-                        <button name="personal" className={`grid__col2 btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
-                        <button name="auto" className={`grid__col3 btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
-                        <button name="home" className={`grid__col4 btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
+                    <div className="layout__header--tabs btn-toolbar" role="group" aria-label="Tool tabs">
+                        <button name="business" className={`btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
+                        <button name="personal" className={`btn btn-secondary ${this.state.tool === 'personal' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'personal'} onClick={this.handleTabClick}>Personal</button>
+                        <button name="auto" className={`btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
+                        <button name="home" className={`btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
                     </div>
                 }
 
-                <div className="grid">
-                    <div className="grid__corner">Choose your options</div>
+                <div className="layout">
+                    <div className="layout__corner">Choose your options</div>
                     
                     <LoanFilter 
                         tool={this.state.tool}
@@ -195,7 +195,7 @@ export default class ComparisonTool extends React.Component {
 
                     <Sorter tool={this.state.tool} handleSort={this.handleSort} />                    
 
-                    <div className="grid__body">
+                    <div className="layout__body">
                         {{
                             business: <BusinessLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,
                             personal: <PersonalLoans loans={this.state.filteredLoans} handleCollapse={this.handleCollapse}/>,

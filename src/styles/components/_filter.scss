@@ -3,7 +3,7 @@
     padding: 20px;
     border-radius: 6px;
     box-shadow: 0 2px 10px 0 rgba(31, 31, 31, 0.14);
-
+    background-color: white;
     @include media-breakpoint-up(xl) {
         grid-area: sidebar;
     }
@@ -26,6 +26,7 @@
 .filter__form {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     padding-top: $size-m;
     & label {
         color: $primary-color;
