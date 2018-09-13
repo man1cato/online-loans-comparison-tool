@@ -7,9 +7,9 @@
         "body";
     grid-column-gap: 20px;
     grid-row-gap: 15px;
-    height: 90vh;
-    padding: $size-l 0;
-    @media (min-width: 1200px) {
+    height: 97vh;
+    padding: $size-l $size-l $size-l 0;
+    @include media-breakpoint-up(xl) {
         grid-template-columns: 1fr 4fr;
         grid-template-rows: min-content auto;
         grid-template-areas: 
@@ -20,7 +20,7 @@
 
 .layout__corner {
     visibility: hidden;
-    @media (min-width: 1200px) {
+    @include media-breakpoint-up(xl) {
         visibility: visible;
         grid-area: corner;
         font-size: $font-l;
@@ -92,7 +92,7 @@
 
 .layout__header--tabs {
     @extend .layout__header;
-    justify-content: space-between;
+    justify-content: space-around;
     border: none;
     > * {
         text-align: center;

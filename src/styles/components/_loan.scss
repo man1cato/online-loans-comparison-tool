@@ -64,10 +64,9 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 $size-l;
     margin: $size-l 0;
     & img {
-        max-width: 100%;
+        max-width: 80%;
     }
 }
 
@@ -91,6 +90,9 @@
     color: $secondary-color;
     font-size: $font-s;
     margin-top: -$size-xl;
+    @include media-breakpoint-down(md) {
+        font-size: $font-xs;
+    }
     > * {
         pointer-events: none;
         margin: 0;

@@ -173,7 +173,8 @@ export default class ComparisonTool extends React.Component {
 
     render () {
         return (
-            <div className="container">
+            <div>
+
                 {this.props.multi &&
                     <div className="layout__header--tabs btn-toolbar" role="group" aria-label="Tool tabs">
                         <button name="business" className={`btn btn-secondary ${this.state.tool === 'business' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'business'} onClick={this.handleTabClick}>Business</button>
@@ -181,10 +182,11 @@ export default class ComparisonTool extends React.Component {
                         <button name="auto" className={`btn btn-secondary ${this.state.tool === 'auto' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'auto'} onClick={this.handleTabClick}>Auto</button>
                         <button name="home" className={`btn btn-secondary ${this.state.tool === 'home' && 'active'}`} data-toggle="button" aria-pressed={this.state.tool === 'home'} onClick={this.handleTabClick}>Home</button>
                     </div>
-                }
+                }  
 
                 <div className="layout">
-                    <div className="layout__corner">Choose your options</div>
+
+                    <div className="layout__corner">Choose your options</div>    
                     
                     <LoanFilter 
                         tool={this.state.tool}
