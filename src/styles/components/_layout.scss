@@ -7,8 +7,8 @@
         "body";
     grid-column-gap: 20px;
     grid-row-gap: 15px;
-    height: 97vh;
-    padding: $size-l $size-l $size-l 0;
+    height: 94vh;
+    padding: $size-l 1.6rem $size-l 0;
     @include media-breakpoint-up(xl) {
         grid-template-columns: 1fr 4fr;
         grid-template-rows: min-content auto;
@@ -59,6 +59,7 @@
     text-align: center;
     border-right: 1px solid $grey-2;
     > * {
+        background-color: transparent;
         width: 25%;
         border-left: 1px solid $grey-2;
         border-right: none;
