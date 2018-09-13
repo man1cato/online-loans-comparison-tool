@@ -64,22 +64,14 @@
         border-right: none;
         border-top: none;
         border-bottom: none;
-        padding: $size-s 0;
+        padding: $size-s;
     }
 }
 
 .layout__header--5col {
     @extend .layout__header;
     > * {
-        @include media-breakpoint-up(lg) {
-            width: 20%;
-        }
-    }
-}
-
-.layout__header__lender {
-    @include media-breakpoint-down(md) {
-        display: none;
+        width: 20%;
     }
 }
 

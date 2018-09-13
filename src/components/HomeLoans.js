@@ -21,7 +21,7 @@ const HomeLoans = ({loans, handleCollapse}) => (
                         <div className="loan__col loan__right-divider">
                             <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                         </div>            
-                        <div className="loan__col--cta">
+                        <div className="loan__col">
                             <div className="loan__lender-logo"><img src={loan.logo} alt={loan.lender} /></div>
                             <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
                         </div>

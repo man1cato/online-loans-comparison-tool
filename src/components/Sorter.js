@@ -54,7 +54,6 @@ const Sorter = ({tool, handleSort}) => (
             </button>
         }
         <button 
-            className="layout__header__lender"
             id="sortLender" 
             name="lender" 
             value="Lender"
