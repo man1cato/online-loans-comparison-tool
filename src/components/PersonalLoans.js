@@ -24,7 +24,7 @@ const PersonalLoans = ({loans, handleCollapse}) => (
 
                         <div className="loan__col">
                             <div className="loan__lender-logo"><img src={loan.logo} alt={loan.lender} /></div>
-                            <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
+                            <a className="btn btn-secondary" role="button" href={loan.ctaLink} target="_blank">Apply Now</a>
                         </div>
                     </div>
 
