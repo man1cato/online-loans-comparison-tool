@@ -46,11 +46,11 @@ const HomeLoans = ({loans, handleCollapse}) => (
                         </div>
 
                         <div>
-                            <h4>Notes</h4>
-                            {loan.notes ? 
+                            <h4>Products</h4>
+                            {loan.products ? 
                                 <ul>
-                                    {loan.notes.map((item, j) => (
-                                        <li key={`${i}note${j}`}>{item}</li>
+                                    {loan.products.map((item, j) => (
+                                        <li key={`${i}product${j}`}>{item}</li>
                                     ))}
                                 </ul>
                                 :

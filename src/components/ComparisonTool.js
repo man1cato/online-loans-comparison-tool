@@ -39,13 +39,21 @@ const defaultFilters = {
 }
 
 
-export default class ComparisonTool extends React.Component {    
-    state = {
-        tool: this.props.tool,
-        filters: defaultFilters[this.props.tool],
-        filteredLoans: this.props[`${this.props.tool}Loans`],
-        sortedBy: this.props.tool === 'business' ? 'sortType' : 'sortApr'
+export default class ComparisonTool extends React.Component { 
+    constructor(props) {
+        super(props);
+        const tool = this.props.tool;
+        const filters = defaultFilters[this.props.tool];
+        const filteredLoans = filterLoans(tool, this.props[`${tool}Loans`], filters)
+
+        this.state = {
+            tool,
+            filters,
+            filteredLoans,
+            sortedBy: tool === 'business' ? 'sortType' : 'sortApr'
+        }
     }
+    
 
     handleTabClick = (e) => {
         const tool = e.target.name;

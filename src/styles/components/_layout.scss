@@ -58,8 +58,8 @@
     font-weight: 400;
     text-align: center;
     border-right: 1px solid $grey-2;
+    background-color: transparent;
     > * {
-        background-color: transparent;
         width: 25%;
         border-left: 1px solid $grey-2;
         border-right: none;

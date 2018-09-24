@@ -6,7 +6,7 @@ import {monthlyPayment, simpleInterest, homeFixedMonthlyPayment, homeFixedIntere
 const airtableBaseUrl = 'https://api.airtable.com/v0/apprEaBSfPkubZY2R';
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
 
-const createListArray = (string) => _.compact(string.split("- "));
+const createListArray = (string) => _.compact(string.split(/\n/));
 
 
 const getBusinessLoans = async () => {
@@ -162,7 +162,7 @@ const getHomeLoans = async () => {
                 minInterest,
                 maxInterest,
                 otherReqs: record.fields["Other Requirements"] ? createListArray(record.fields["Other Requirements"]) : undefined,
-                notes: record.fields["Notes"] ? createListArray(record.fields["Notes"]) : undefined,
+                products: record.fields["Products"] || undefined,
                 ctaLink: record.fields["CTA Link"]
             }
         }));
@@ -170,10 +170,6 @@ const getHomeLoans = async () => {
     
     return _.orderBy(loans, ['minApr']);
 }
-
-
-
-
 
 
 module.exports = {
