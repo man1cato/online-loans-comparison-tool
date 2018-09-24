@@ -148,7 +148,7 @@ const getHomeLoans = async () => {
             return {
                 id: record.id,
                 lender: record.fields["Lender Text"], 
-                logo: record.fields.Logo[0].url, 
+                logo: record.fields.Logo && record.fields.Logo[0].url, 
                 purpose: record.fields.Purpose,
                 type: record.fields.Type,
                 minCreditScore: record.fields["Min Credit Score"],
