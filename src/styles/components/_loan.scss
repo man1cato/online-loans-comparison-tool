@@ -92,7 +92,6 @@
 
 
 .loan__lender-logo {
-    max-width: 80%;
     @include media-breakpoint-down(md) {
         display: none;
     }
