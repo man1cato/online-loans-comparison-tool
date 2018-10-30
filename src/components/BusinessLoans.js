@@ -2,6 +2,7 @@ import React from 'react';
 import numeral from 'numeral';
 
 import LoanCollapser from './LoanCollapser';
+import ApplyButton from './ApplyButton';
 
 const BusinessLoans = ({loans, handleCollapse}) => (
 
@@ -24,13 +25,12 @@ const BusinessLoans = ({loans, handleCollapse}) => (
                         <div className="loan__col">
                             <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                         </div>        
-                        <div className="loan__col loan__right-divider">
+                        <div className="loan__col">
                             <h3>{loan.minCreditScore}</h3>
                         </div>
 
                         <div className="loan__col">
-                            <div className="loan__lender-logo"><img src={loan.logo} alt={loan.lender} /></div>
-                            <a className="btn btn-secondary" role="button" href={loan.ctaLink}>Apply Now</a>
+                            <ApplyButton loan={loan}/>
                         </div>
                     </div>
                     
@@ -40,6 +40,9 @@ const BusinessLoans = ({loans, handleCollapse}) => (
 
                 <div className="collapse" id={`loan${i}Details`} data-parent="#accordion">
                     <div className="loan__details--3col">
+
+                        <h3>Type: {loan.type}</h3>
+
                         <div className="loan__right-divider">
                             <h4>Other Requirements</h4>
                             {loan.otherReqs ? 
@@ -78,6 +81,11 @@ const BusinessLoans = ({loans, handleCollapse}) => (
                                 <p>None</p>
                             }
                         </div>
+                        
+                        <div className="loan__details__button">
+                            <ApplyButton loan={loan}/>
+                        </div>
+
                     </div>
                 </div>
 

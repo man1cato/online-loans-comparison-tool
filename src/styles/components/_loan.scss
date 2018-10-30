@@ -47,12 +47,25 @@
     > * {
         width: 25%;
     }
+    > :last-child {
+        border-left: solid 1px #d6dfe7;
+    }
+    @include media-breakpoint-down(xs) {
+        > :last-child {
+            display: none;
+        }
+    }
 }
 
 .loan__content--5col {
     @extend .loan__content;
     > * {
         width: 20%;
+    }
+    @include media-breakpoint-down(xs) {
+        > :first-child {
+            display: none;
+        }
     }
 }
 
@@ -92,8 +105,9 @@
     color: $secondary-color;
     font-size: $font-s;
     margin-top: -$size-xl;
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(xs) {
         font-size: $font-xs;
+        margin-top: -$size-m;
     }
     > * {
         pointer-events: none;
@@ -109,21 +123,50 @@
     padding: $size-l 0;
     border-top: solid 1px rgba(0,0,0,.125);
     border-radius: 0 0 6px 6px;
+    flex-direction: column;
     > * {
         padding: 0 $size-l;
-        width: 50%;
+    }
+    > h3 {
+        display: none;
+    }
+    @include media-breakpoint-down(xs) {
+        > h3 {
+            display: block;
+            padding-bottom: $size-m; 
+        }
+    }
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        > * {
+            width: 50%;
+        }
     }
 }
 
 .loan__details--3col {
     @extend .loan__details;
-    > * {
-        width: 33%;
+    @include media-breakpoint-up(md) {
+        > * {
+            width: 33%;
+        }   
+    }
+}
+
+.loan__details__button {
+    display: none;
+    @include media-breakpoint-down(xs) {
+        display: block;
+        text-align: center;
+        margin-top: $size-s;
     }
 }
 
 .loan__right-divider {
     border-right: solid 1px #d6dfe7;
+    @include media-breakpoint-down(sm) {
+        border: none;
+    }
 }
 
 

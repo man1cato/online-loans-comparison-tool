@@ -8,8 +8,10 @@
     grid-column-gap: 20px;
     grid-row-gap: 15px;
     height: 94vh;
-    padding: $size-l 1.6rem $size-l 0;
+    margin: $size-m;
+    padding: $size-l 0;
     @include media-breakpoint-up(xl) {
+        padding-right: 1.6rem;
         grid-template-columns: 1fr 4fr;
         grid-template-rows: min-content auto;
         grid-template-areas: 
@@ -67,6 +69,14 @@
         border-bottom: none;
         padding: $size-s;
     }
+    @include media-breakpoint-down(xs) {
+        > * {
+            width: 33%;
+        }
+        > :last-child {
+            display: none;
+        }
+    }
 }
 
 .layout__header--5col {
@@ -74,13 +84,24 @@
     > * {
         width: 20%;
     }
+    @include media-breakpoint-down(xs) {
+        > * {
+            width: 33%;
+        }
+        > :first-child {
+            display: none;
+        }
+    }
 }
 
 .layout__body {
     grid-area: body;
     overflow: scroll;
     padding-right: 10px;
-    margin-right: -25px;
+    margin-right: -10px;
+    @include media-breakpoint-up(xl) {
+        margin-right: -25px;
+    }
 }
 
 .layout__header--tabs {

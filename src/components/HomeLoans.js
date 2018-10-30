@@ -2,6 +2,7 @@ import React from 'react';
 import numeral from 'numeral';
 
 import LoanCollapser from './LoanCollapser';
+import ApplyButton from './ApplyButton';
 
 const HomeLoans = ({loans, handleCollapse}) => (
 
@@ -18,12 +19,11 @@ const HomeLoans = ({loans, handleCollapse}) => (
                         <div className="loan__col">
                             <h3>{numeral(loan.minMonthlyPayment).format('$0,0')} - {numeral(loan.maxMonthlyPayment).format('$0,0')}</h3>
                         </div>        
-                        <div className="loan__col loan__right-divider">
+                        <div className="loan__col">
                             <h3>{numeral(loan.minInterest).format('$0,0')} - {numeral(loan.maxInterest).format('$0,0')}</h3>
                         </div>            
                         <div className="loan__col">
-                            <div className="loan__lender-logo"><img src={loan.logo} alt={loan.lender} /></div>
-                            <a className="btn btn-secondary" role="button" href={loan.ctaLink} target="_blank">Apply Now</a>
+                            <ApplyButton loan={loan}/>
                         </div>
                     </div>
 
@@ -56,6 +56,10 @@ const HomeLoans = ({loans, handleCollapse}) => (
                                 :
                                 <p>None</p>
                             }
+                        </div>
+
+                        <div className="loan__details__button">
+                            <ApplyButton loan={loan}/>
                         </div>
                     </div>
                 </div>

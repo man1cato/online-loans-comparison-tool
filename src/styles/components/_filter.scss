@@ -55,13 +55,21 @@
 }
 
 .filter__group {
-    @extend .form-group;
     height: min-content;
+    min-width: 200px;
+    @include media-breakpoint-down(md) {
+        margin-left: $size-s;
+        margin-right: $size-s;
+    }
+    @include media-breakpoint-down(xs) {
+        width: 100%;
+    }
 }
 
-.filter__radio-group {
+.filter__group--radio {
     display: flex;
     flex-direction: column;
+    margin-bottom: $size-m;
     & label {
         display: inline-flex;
         color: #495057;
